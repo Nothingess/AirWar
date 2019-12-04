@@ -1,0 +1,48 @@
+
+HYX.png
+size: 256,64
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+HY-_0
+  rotate: true
+  xy: 94, 5
+  size: 25, 37
+  orig: 25, 37
+  offset: 0, 0
+  index: -1
+HY-_1
+  rotate: true
+  xy: 134, 39
+  size: 23, 36
+  orig: 23, 36
+  offset: 0, 0
+  index: -1
+HY-_2
+  rotate: false
+  xy: 172, 39
+  size: 11, 23
+  orig: 11, 23
+  offset: 0, 0
+  index: -1
+HY-_3
+  rotate: false
+  xy: 185, 39
+  size: 11, 23
+  orig: 11, 23
+  offset: 0, 0
+  index: -1
+HY-_4
+  rotate: true
+  xy: 2, 2
+  size: 60, 90
+  orig: 60, 90
+  offset: 0, 0
+  index: -1
+HY-_5
+  rotate: false
+  xy: 94, 32
+  size: 38, 30
+  orig: 38, 30
+  offset: 0, 0
+  index: -1

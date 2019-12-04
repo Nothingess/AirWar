@@ -1,0 +1,90 @@
+
+SLM.png
+size: 512,256
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+SLM__0
+  rotate: false
+  xy: 447, 206
+  size: 34, 47
+  orig: 34, 47
+  offset: 0, 0
+  index: -1
+SLM__1
+  rotate: false
+  xy: 351, 153
+  size: 34, 47
+  orig: 34, 47
+  offset: 0, 0
+  index: -1
+SLM__10
+  rotate: false
+  xy: 189, 96
+  size: 86, 55
+  orig: 86, 55
+  offset: 0, 0
+  index: -1
+SLM__2
+  rotate: false
+  xy: 189, 153
+  size: 112, 100
+  orig: 112, 100
+  offset: 0, 0
+  index: -1
+SLM__3
+  rotate: true
+  xy: 2, 2
+  size: 31, 46
+  orig: 31, 46
+  offset: 0, 0
+  index: -1
+SLM__4
+  rotate: false
+  xy: 325, 105
+  size: 31, 46
+  orig: 31, 46
+  offset: 0, 0
+  index: -1
+SLM__5
+  rotate: false
+  xy: 2, 35
+  size: 185, 218
+  orig: 185, 218
+  offset: 0, 0
+  index: -1
+SLM__5-1
+  rotate: false
+  xy: 189, 41
+  size: 62, 53
+  orig: 62, 53
+  offset: 0, 0
+  index: -1
+SLM__6
+  rotate: false
+  xy: 303, 153
+  size: 46, 47
+  orig: 46, 47
+  offset: 0, 0
+  index: -1
+SLM__7
+  rotate: false
+  xy: 277, 104
+  size: 46, 47
+  orig: 46, 47
+  offset: 0, 0
+  index: -1
+SLM__8
+  rotate: true
+  xy: 391, 200
+  size: 53, 54
+  orig: 53, 54
+  offset: 0, 0
+  index: -1
+SLM__9
+  rotate: false
+  xy: 303, 202
+  size: 86, 51
+  orig: 86, 51
+  offset: 0, 0
+  index: -1

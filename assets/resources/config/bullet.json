@@ -1,0 +1,46 @@
+{
+    "bulletType":[
+        {"wid":30, "hei":60, "radius":15, "offsetX":0, "offsetY":10},
+        {"wid":60, "hei":60, "radius":28, "offsetX":0, "offsetY":2},
+        {"wid":90, "hei":90, "radius":45, "offsetX":0, "offsetY":0}
+    ],
+    "bulletConfig":[
+        {
+            "type":[
+                {"wid":20, "hei":20, "radius":18},
+                {"wid":28, "hei":18, "radius":20},
+                {"wid":35, "hei":39, "radius":22},
+                {"wid":42, "hei":46, "radius":30},
+                {"wid":50, "hei":64, "radius":30}
+            ]
+        },
+        {
+            "type":[
+                {"wid":20, "hei":43, "radius":8},
+                {"wid":28, "hei":29, "radius":15},
+                {"wid":35, "hei":56, "radius":15},
+                {"wid":43, "hei":44, "radius":22},
+                {"wid":50, "hei":51, "radius":22}
+            ]
+        },
+        {
+            "type":[
+                {"wid":20, "hei":58, "radius":8},
+                {"wid":28, "hei":49, "radius":12},
+                {"wid":35, "hei":45, "radius":23},
+                {"wid":42, "hei":35, "radius":28},
+                {"wid":50, "hei":56, "radius":32}
+            ]
+        }
+    ],
+    "eyBulletType":[
+        {"scale":4, "radius":8, "isRot":-1},
+        {"scale":2, "radius":8, "isRot":-1}
+    ],
+    "boss":[
+        {"wid":400, "hei":260,"radius":200, "offsetX":0, "offsetY":50, "rot":180}
+    ],
+    "resources":[
+        
+    ]
+}

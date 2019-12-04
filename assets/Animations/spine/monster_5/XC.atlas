@@ -1,0 +1,69 @@
+
+XC.png
+size: 256,256
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+XC__0
+  rotate: true
+  xy: 194, 2
+  size: 94, 38
+  orig: 94, 38
+  offset: 0, 0
+  index: -1
+XC__1
+  rotate: false
+  xy: 2, 109
+  size: 130, 142
+  orig: 130, 143
+  offset: 0, 1
+  index: -1
+XC__2
+  rotate: true
+  xy: 194, 98
+  size: 83, 58
+  orig: 83, 58
+  offset: 0, 0
+  index: -1
+XC__3
+  rotate: true
+  xy: 134, 47
+  size: 134, 58
+  orig: 134, 58
+  offset: 0, 0
+  index: -1
+XC__4
+  rotate: true
+  xy: 2, 26
+  size: 81, 130
+  orig: 81, 130
+  offset: 0, 0
+  index: -1
+XC__5
+  rotate: false
+  xy: 134, 3
+  size: 45, 42
+  orig: 45, 42
+  offset: 0, 0
+  index: -1
+XC__6
+  rotate: true
+  xy: 204, 221
+  size: 30, 27
+  orig: 30, 27
+  offset: 0, 0
+  index: -1
+XC__7
+  rotate: false
+  xy: 134, 183
+  size: 68, 68
+  orig: 68, 68
+  offset: 0, 0
+  index: -1
+XC__8
+  rotate: false
+  xy: 2, 5
+  size: 33, 19
+  orig: 34, 19
+  offset: 1, 0
+  index: -1

@@ -1,0 +1,55 @@
+
+STX.png
+size: 256,128
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+STX-_0
+  rotate: false
+  xy: 2, 15
+  size: 27, 27
+  orig: 27, 27
+  offset: 0, 0
+  index: -1
+STX-_1
+  rotate: false
+  xy: 2, 2
+  size: 10, 11
+  orig: 10, 11
+  offset: 0, 0
+  index: -1
+STX-_2
+  rotate: false
+  xy: 89, 44
+  size: 25, 27
+  orig: 25, 27
+  offset: 0, 0
+  index: -1
+STX-_3
+  rotate: false
+  xy: 209, 111
+  size: 12, 11
+  orig: 12, 11
+  offset: 0, 0
+  index: -1
+STX-_4
+  rotate: false
+  xy: 89, 73
+  size: 58, 49
+  orig: 58, 49
+  offset: 0, 0
+  index: -1
+STX-_4.1
+  rotate: false
+  xy: 149, 73
+  size: 58, 49
+  orig: 58, 49
+  offset: 0, 0
+  index: -1
+STX-_5
+  rotate: false
+  xy: 2, 44
+  size: 85, 78
+  orig: 85, 78
+  offset: 0, 0
+  index: -1

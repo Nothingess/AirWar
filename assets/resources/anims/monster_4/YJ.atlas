@@ -1,0 +1,83 @@
+
+YJ.png
+size: 128,128
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+yj__0
+  rotate: false
+  xy: 66, 2
+  size: 29, 21
+  orig: 29, 21
+  offset: 0, 0
+  index: -1
+yj__1
+  rotate: false
+  xy: 68, 111
+  size: 47, 15
+  orig: 47, 15
+  offset: 0, 0
+  index: -1
+yj__10
+  rotate: false
+  xy: 68, 55
+  size: 26, 26
+  orig: 26, 26
+  offset: 0, 0
+  index: -1
+yj__2
+  rotate: false
+  xy: 96, 63
+  size: 15, 21
+  orig: 15, 21
+  offset: 0, 0
+  index: -1
+yj__3
+  rotate: false
+  xy: 96, 40
+  size: 15, 21
+  orig: 15, 21
+  offset: 0, 0
+  index: -1
+yj__4
+  rotate: false
+  xy: 2, 25
+  size: 64, 101
+  orig: 64, 101
+  offset: 0, 0
+  index: -1
+yj__5
+  rotate: true
+  xy: 96, 86
+  size: 23, 16
+  orig: 23, 16
+  offset: 0, 0
+  index: -1
+yj__6
+  rotate: false
+  xy: 2, 2
+  size: 30, 21
+  orig: 30, 21
+  offset: 0, 0
+  index: -1
+yj__7
+  rotate: false
+  xy: 68, 83
+  size: 26, 26
+  orig: 26, 26
+  offset: 0, 0
+  index: -1
+yj__8
+  rotate: false
+  xy: 68, 37
+  size: 23, 16
+  orig: 23, 16
+  offset: 0, 0
+  index: -1
+yj__9
+  rotate: false
+  xy: 34, 2
+  size: 30, 21
+  orig: 30, 21
+  offset: 0, 0
+  index: -1

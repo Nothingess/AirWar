@@ -1,0 +1,55 @@
+
+LS.png
+size: 128,64
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+LS-_0
+  rotate: true
+  xy: 66, 32
+  size: 27, 35
+  orig: 27, 35
+  offset: 0, 0
+  index: -1
+LS-_1
+  rotate: true
+  xy: 66, 3
+  size: 27, 35
+  orig: 27, 35
+  offset: 0, 0
+  index: -1
+LS-_2
+  rotate: false
+  xy: 33, 26
+  size: 31, 33
+  orig: 31, 33
+  offset: 0, 0
+  index: -1
+LS-_3
+  rotate: false
+  xy: 2, 2
+  size: 29, 57
+  orig: 29, 57
+  offset: 0, 0
+  index: -1
+LS-_4
+  rotate: false
+  xy: 103, 40
+  size: 14, 19
+  orig: 14, 19
+  offset: 0, 0
+  index: -1
+LS-_5
+  rotate: false
+  xy: 33, 6
+  size: 12, 18
+  orig: 12, 18
+  offset: 0, 0
+  index: -1
+LS-_6
+  rotate: false
+  xy: 103, 20
+  size: 12, 18
+  orig: 12, 18
+  offset: 0, 0
+  index: -1

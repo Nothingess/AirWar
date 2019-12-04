@@ -1,0 +1,32 @@
+{
+  "ver": "2.3.1",
+  "uuid": "d06a6d79-fc71-4ba6-8d98-46667acdb0f5",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "platformSettings": {},
+  "subMetas": {
+    "EyBullet_water": {
+      "ver": "1.0.4",
+      "uuid": "b7315496-8234-451b-aa3b-9fdd6c07610f",
+      "rawTextureUuid": "d06a6d79-fc71-4ba6-8d98-46667acdb0f5",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 18,
+      "height": 18,
+      "rawWidth": 18,
+      "rawHeight": 18,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}
