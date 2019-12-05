@@ -292,8 +292,8 @@ export class RoleCtrl {
 
         setTimeout(() => {
             this.resurgence();
-        }, 5000);
-        (this.mUISys.getFacade() as MainFacade).getUISystem().startCountDown(5);
+        }, 3000);
+        (this.mUISys.getFacade() as MainFacade).getUISystem().startCountDown(3);
 
         GlobalVar.AudioMgr.playSound(GlobalVar.CONST.ENUM.AUDIO_TYPE.roleDie);
         GlobalVar.EventMgr.dispatchEvent(GlobalVar.CONST.EVENT.playDie);

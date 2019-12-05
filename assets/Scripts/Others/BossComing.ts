@@ -18,6 +18,7 @@ export class BossComing extends cc.Component {
         let windowsize: cc.Size = cc.view.getVisibleSize();
         this.leftBar.y = windowsize.height * .5;
         this.rightBar.y = -this.leftBar.y;
+        this.bossShadow.y = windowsize.height * .25;
 
         this.node.runAction(cc.sequence(
             cc.fadeIn(1),
@@ -31,6 +32,8 @@ export class BossComing extends cc.Component {
                             cc.sequence(
                                 cc.blink(1, 5),
                                 cc.delayTime(1),
+                                cc.fadeOut(1),
+                                cc.delayTime(5),
                                 cc.callFunc(() => {
                                     this.node.runAction(
                                         cc.sequence(

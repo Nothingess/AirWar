@@ -232,7 +232,8 @@ export class EnemySys extends ISystem {
             GlobalVar.CONST.BOSS_SKINPATH,
             GlobalVar.GetHandler((obj: cc.Node) => {
                 obj.parent = this.mLayer;
-                obj.setPosition(cc.v2(this.mPointList[2], GlobalVar.SysInfo.view.height * 1.2));
+                obj.opacity = 0;
+                obj.setPosition(cc.v2(this.mPointList[2], GlobalVar.SysInfo.view.height * .7));
                 let boss: BossEnemy = obj.addComponent(type);
 
                 if (boss) {

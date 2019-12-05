@@ -22,20 +22,18 @@ export class PKSystem extends ISystem {
     /**初始化玩家阵营 */
     private initCamp(): void {
 
+        let tempArr: Array<number> = [0, 1, 2, 3];
         for (let i = 0; i < 4; i++) {
             let rand: number = GlobalVar.SeedRandom();
-            if (rand > .75) {
-                this.mBossList.push(0);
-            } else if (rand > .5) {
-                this.mBossList.push(1);
-            }
-            else if (rand > .25) {
-                this.mBossList.push(2);
-            } else {
-                this.mBossList.push(3);
-            }
+            let index: number = GlobalVar.GetEleformArrByPer(tempArr, rand);
+            if (!index) { index = 0 }
+
+            this.mBossList.push(tempArr[index])
+            tempArr.splice(index, 1);
         }
+        
         //this.mBossList = [1, 0, 2, 2]
+        console.log(`boss coming arr : ${this.mBossList}`);
 
         this.mSelfPlayer = new MySelf(this);
         if (GlobalVar.NetConfig.isAI) { this.mOppPlayer = new AI(this); }

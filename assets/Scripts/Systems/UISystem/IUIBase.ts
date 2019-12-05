@@ -143,40 +143,6 @@ export class LoadPanel extends IUIBase {
     }
 
 }
-export class TipPanel extends IUIBase {
-    private mCloseBtn: cc.Node = null;
-    private mShowLa: cc.Label = null;
-
-    public init(mgr: PanelMgr, params?: any[]): void {
-        super.init(mgr, params);
-        this.mSkinPath = "TipPanel";
-        this.mLayer = GlobalVar.CONST.ENUM.PANEL_LAYER.tipLayer;
-    }
-    /**初始化动画策略 */
-    public initStrategy(): void {
-        this.mOpenStrategy = new strateB(this.mSkin);
-    }
-    protected onShowing(): void {
-        //配置屏幕适应
-        this.mSkin.setPosition(GlobalVar.SysInfo.view.width * .5, GlobalVar.SysInfo.view.height * .5);
-        super.onShowing();
-
-        this.initComponent();
-    }
-    protected initComponent(): void {
-        this.mCloseBtn = cc.find('btn_close', this.mSkin);
-        this.mShowLa = cc.find('conent', this.mSkin).getComponent(cc.Label);
-
-        this.mShowLa.string = this.mArgs[0];
-        this.onEvent();
-    }
-    protected onEvent(): void {
-        this.mCloseBtn.on('touchend', this.onClose, this);
-    }
-    protected offEvent(): void {
-        this.mCloseBtn.off('touchend', this.onClose, this);
-    }
-}
 
 export class CloseAnAccountPanel extends IUIBase {
     private mLight: cc.Sprite = null;

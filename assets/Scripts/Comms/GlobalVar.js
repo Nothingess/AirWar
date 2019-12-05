@@ -34,6 +34,20 @@ function seedRandom(max, min) {
     let rnd = seed / 233280.0;
     return min + rnd * (max - min);
 }
+/**
+ * 通过百分比来获取数组中对应元素的索引
+ * @param {Array} arr 目标数组
+ * @param {*} per 百分比(0~1之间，不包括1)
+ */
+function getEleformArrByPer(arr, per) {
+    if (per >= 1) { per = .99 }
+    if (per < 0) { per = 0 }
+    if (arr.length <= 0) return null;
+
+    let unit = 1 / arr.length;
+    let index = Math.floor(per / unit);
+    return index;
+}
 
 window.GlobalVar = {}
 GlobalVar.Loader = LoaderMgr.getInst();                     //资源管理器
@@ -58,12 +72,17 @@ GlobalVar.SetSeed = (val) => {
     seed = GlobalVar.NetConfig.randomSeed = val;
     console.log(seed);
 }
+GlobalVar.GetEleformArrByPer = getEleformArrByPer;
 
 //字段
 GlobalVar.NetConfig = {
     selectRoleId: 0,
     /**对手是ai玩家 */
     isAI: false,
+    /**我方玩家头像 */
+    selfAvatar: null,
+    /**对方玩家头像 */
+    oppAvatar: null,
     /**随机种子 */
     randomSeed: 0,
     /**连接服务器成功 */
@@ -499,6 +518,10 @@ if (typeof (hg) !== 'undefined') {
             hg.pkFinishError({ message: "connect to server error", code: "100" });
         }, 5000);
     }, 'LCHago')
+
+    //获取匹配信息
+    //let matchupInfo = hg.getMatchupInfo()
+    //console.error(`获取匹配信息：\n${JSON.stringify(matchupInfo)}`)
 } else {
     GlobalVar.NetConfig.loginTimes = 3;
 }

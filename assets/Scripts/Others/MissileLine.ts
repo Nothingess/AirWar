@@ -30,15 +30,23 @@ export class MissileLine extends cc.Component {
     }
     /**准备阶段 */
     private prepare(): void {
-        this.node.setScale(.3, 1);
+        this.node.stopAllActions();
+        this.node.height = GlobalVar.SysInfo.view.height * 1.2;
+        this.node.y = GlobalVar.SysInfo.view.height;
+        this.node.setScale(1, 1);
+        this.node.opacity = 0;
         //准备阶段结束 回调：开火
         this.node.runAction(cc.sequence(
+            cc.spawn(
+                cc.moveBy(.3, cc.v2(0, -GlobalVar.SysInfo.view.height * .1)),
+                cc.fadeIn(.3)
+            ),
             cc.spawn(
                 cc.sequence(
                     cc.blink(2, 8),
                     cc.blink(1.4, 2)
                 ),
-                cc.scaleTo(3.5, 1.5, 1)
+                cc.scaleTo(3.5, 2, 1)
             ),
             cc.callFunc(() => {
                 this.fire();

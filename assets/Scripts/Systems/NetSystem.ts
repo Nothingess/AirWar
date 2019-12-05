@@ -256,8 +256,10 @@ class HagoLC extends IPlatform {
         opponent: { isAI: boolean, avatar: any },
         seed: number,
     }): void {
-        console.log(data, 'onCreate');
+        console.error(`onCreate : ${JSON.stringify(data)}`);
         GlobalVar.NetConfig.isAI = data.opponent.isAI;
+        GlobalVar.NetConfig.selfAvatar = data.you.avatar;
+        GlobalVar.NetConfig.oppAvatar = data.opponent.avatar;
         GlobalVar.NetConfig.isConnect = true;
         GlobalVar.SetSeed(data.seed);
         GlobalVar.EventMgr.dispatchEvent(GlobalVar.CONST.EVENT.connectSuc);

@@ -341,8 +341,8 @@
     },
     "_scale": {
       "__type__": "cc.Vec3",
-      "x": 1.3,
-      "y": 1.3,
+      "x": 1.5,
+      "y": 1.5,
       "z": 1
     },
     "_eulerAngles": {
@@ -433,7 +433,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 313.15,
+      "width": 382.1,
       "height": 52.4
     },
     "_anchorPoint": {

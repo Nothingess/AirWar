@@ -102,8 +102,6 @@ export class MainFacade extends ISceneFacade {
         }
         this.mRole.initSys(this);
         (this.mUISystem as MainUISystem).createRole();
-
-        //this.getUISystem().openPanel(TipPanel, 'TipPanel', ['hello world'])
     }
 
     public rendererUpdate(dt): void {

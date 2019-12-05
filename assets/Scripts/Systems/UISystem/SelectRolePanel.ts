@@ -1,5 +1,3 @@
-import { TipPanel } from "./IUIBase";
-
 const { ccclass, property } = cc._decorator;
 
 /**
@@ -55,6 +53,8 @@ export class SelectRolePanel extends cc.Component {
     select_c: SelectBox = new SelectBox();
     @property({ type: SelectBox, tooltip: '选择R' })
     select_r: SelectBox = new SelectBox();
+    @property({ type: cc.Node, tooltip: "offLine tip" })
+    offLineTip: cc.Node = null;
     private mCurSelectBox: SelectBox = null;
 
     private mCurIndex: number = -1;          //当前选择的角色索引（id）
@@ -298,11 +298,7 @@ export class SelectRolePanel extends cc.Component {
     }
     private onTouchBtnC(): void {
         if (!GlobalVar.NetConfig.isConnect) {
-            GlobalVar.EventMgr.dispatchEvent(GlobalVar.CONST.EVENT.openPanel, {
-                type: TipPanel,
-                name: 'TipPanel',
-                args: ['连接失败，重连中...']
-            });
+            this.showOffLineTip();
             return;
         }
         if (GlobalVar.NetConfig.isReady) return;//已经准备就绪
@@ -311,12 +307,34 @@ export class SelectRolePanel extends cc.Component {
         this.endAnimation();
         this.mbtnEnter.active = false;
         this.mRole.node.runAction(cc.spawn(
-            cc.scaleBy(.3, 1.25),
-            cc.moveBy(.3, cc.v2(0, -200))
+            cc.scaleBy(.5, 1.5).easing(cc.easeInOut(3)),
+            cc.moveBy(.5, cc.v2(0, -300)).easing(cc.easeInOut(3))
         ));
 
         this.showTipLa.string = 'Waiting for opponent';
         GlobalVar.EventMgr.dispatchEvent(GlobalVar.CONST.EVENT.ready);
+    }
+    private showOffLineTip(): void {
+        if (!this.offLineTip) return;
+        let tip: cc.Node = this.offLineTip.getChildByName('offLine_tip');
+        if (!tip) return;
+
+        this.offLineTip.stopAllActions();
+        this.offLineTip.opacity = 0;
+        this.offLineTip.runAction(cc.sequence(
+            cc.fadeIn(.3),
+            cc.delayTime(2),
+            cc.fadeOut(.5)
+        ))
+
+        let path: string = `${GlobalVar.CONST.UI_PATH.OFFLINE
+            }${GlobalVar.NetConfig.language}`;
+
+        let han = GlobalVar.GetHandler((sf) => {
+            tip.getComponent(cc.Sprite).spriteFrame = sf;
+        }, this)
+
+        GlobalVar.Loader.loadRes(path, han, cc.SpriteFrame);
     }
 }
 

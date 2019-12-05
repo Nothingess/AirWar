@@ -1,6 +1,6 @@
 import { ISystem } from "../ISystem";
 import { PanelMgr } from "./PanelMgr";
-import { IUIBase, LoadPanel, TipPanel } from "./IUIBase";
+import { IUIBase, LoadPanel } from "./IUIBase";
 import { ISceneFacade, MainFacade } from "../../Scenes/ISceneFacade";
 import { MainScene } from "../../Scenes/ISceneState";
 import { RoleCtrl } from "./Role/RoleCtrl";

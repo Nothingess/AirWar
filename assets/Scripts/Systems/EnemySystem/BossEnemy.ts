@@ -67,7 +67,7 @@ export class BossEnemy extends IEnemy {//BOSS
         //move to targetPosY
         this.node.runAction(
             cc.sequence(
-                cc.moveBy(5, cc.v2(0, -GlobalVar.SysInfo.view.height * .5)),
+                cc.fadeIn(1),
                 cc.callFunc(() => { this.ready(); })
             )
         )
