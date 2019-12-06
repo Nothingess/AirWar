@@ -155,11 +155,13 @@ export class SelectRolePanel extends cc.Component {
         if (!this.mRole) return;
 
         this.mRole.node.opacity = 0;
-        this.mRole.node.setPosition(this.mShowPos.sub(cc.v2(0, 100)));
+        this.mRole.node.scale = 1.6;
+        this.mRole.node.setPosition(this.mShowPos.sub(cc.v2(0, 200)));
         this.mRole.node.runAction(
             cc.spawn(
-                cc.moveTo(.2, this.mShowPos),
-                cc.fadeIn(.2)
+                cc.scaleTo(.3, 2),
+                cc.moveTo(.3, this.mShowPos).easing(cc.easeOut(3)),
+                cc.fadeIn(.3)
             )
         )
         this.setSpineData();

@@ -503,7 +503,9 @@ class ISkill {
         }
     }
     /**攻击 */
-    protected attk(): void { }
+    protected attk(): void { 
+        this.playSkillAudio();
+    }
     /**播放攻击提示 */
     protected attkTip(): cc.Node {
         return this.mRoleCtrl.attkTip();
@@ -523,7 +525,6 @@ class ISkill {
         if (this.mState > 0) return;//攻击状态
         this.mCb = cb;
         this.init();
-        this.playSkillAudio();
     }
     protected playSkillAudio(): void {
 
@@ -541,6 +542,7 @@ class MageSkill extends ISkill {
     private mIndex: number = 0;
 
     protected attk(): void {
+        super.attk();
         let node: cc.Node = GlobalVar.PoolMgr.get(PyFaShi.type);
         if (node) {
             node.setPosition(this.getPos());
@@ -579,6 +581,7 @@ class MechaSkill extends ISkill {
     }
 
     protected attk(): void {
+        super.attk();
         this.createSwordkee();
     }
     private createSwordkee(): void {
@@ -612,6 +615,7 @@ class ElfSkill extends ISkill {
         ]; */
 
     protected attk(): void {
+        super.attk();
         this.createSwordkee(90 * Math.PI / 180);
     }
 

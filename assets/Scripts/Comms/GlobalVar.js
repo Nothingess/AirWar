@@ -79,9 +79,9 @@ GlobalVar.NetConfig = {
     selectRoleId: 0,
     /**对手是ai玩家 */
     isAI: false,
-    /**我方玩家头像 */
+    /**我方玩家头像 tex2d */
     selfAvatar: null,
-    /**对方玩家头像 */
+    /**对方玩家头像 tex2d */
     oppAvatar: null,
     /**随机种子 */
     randomSeed: 0,
@@ -520,10 +520,41 @@ if (typeof (hg) !== 'undefined') {
     }, 'LCHago')
 
     //获取匹配信息
-    //let matchupInfo = hg.getMatchupInfo()
-    //console.error(`获取匹配信息：\n${JSON.stringify(matchupInfo)}`)
+    let matchupInfo = hg.getMatchupInfo();
+    let loadPlayAvatar = GlobalVar.GetHandler((tex2d) => {
+        GlobalVar.NetConfig.selfAvatar = tex2d;
+    }, this)
+    GlobalVar.Loader.loadExternalAsset(
+        matchupInfo.player.avatarurl,
+        loadPlayAvatar
+    )
+
+    console.error(`获取匹配信息：\n${JSON.stringify(matchupInfo)}`);
+    let opt = matchupInfo.player.opt;
+    opt = opt.replace("\\", "");
+    let optObj = JSON.parse(opt);
+
+    console.error(opt);
+
+    hg.getUserInfoByUids({
+        uids: [optObj.ai_info.uid],
+        success: function (res) {
+            console.error("getUserInfoByUids result:" + JSON.stringify(res))
+            let loadOppAvatar = GlobalVar.GetHandler((tex2d) => {
+                GlobalVar.NetConfig.oppAvatar = tex2d;
+            }, this)
+            GlobalVar.Loader.loadExternalAsset(
+                res[0].avatar,
+                loadOppAvatar
+            )
+            console.error(`对手头像路径：${GlobalVar.NetConfig.oppAvatar}`);
+        }
+        , fail: function (res) {
+            console.error("hg.getUserInfoByUids fail " + res.errCode)
+        }
+    })
 } else {
-    GlobalVar.NetConfig.loginTimes = 3;
+    GlobalVar.NetConfig.loginTimes = 7;
 }
 
 //#endregion

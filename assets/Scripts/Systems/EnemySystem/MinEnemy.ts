@@ -124,7 +124,7 @@ export class MinEnemy extends IEnemy {//小怪
         this.dieAc();
         GlobalVar.EventMgr.dispatchEvent(GlobalVar.CONST.EVENT.eatScore, 100);
         if (this.mGroup) { this.mGroup.complete(); this.mGroup = null; }
-        GlobalVar.AudioMgr.playSound(GlobalVar.CONST.ENUM.AUDIO_TYPE.monsterDie);
+        //GlobalVar.AudioMgr.playSound(GlobalVar.CONST.ENUM.AUDIO_TYPE.monsterDie);
         this.recycle();
     }
     public recycle(): void {
@@ -145,6 +145,7 @@ export class MinEnemy extends IEnemy {//小怪
             this.mHpFrame.updateBar(this.mHp / this.mMaxHp)
         }
         this.playHit();
+        GlobalVar.AudioMgr.playSound(GlobalVar.CONST.ENUM.AUDIO_TYPE.monsterDie);
     }
     protected onEvents(): void {
         GlobalVar.EventMgr.addEventListener(

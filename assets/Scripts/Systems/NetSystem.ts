@@ -258,8 +258,26 @@ class HagoLC extends IPlatform {
     }): void {
         console.error(`onCreate : ${JSON.stringify(data)}`);
         GlobalVar.NetConfig.isAI = data.opponent.isAI;
-        GlobalVar.NetConfig.selfAvatar = data.you.avatar;
-        GlobalVar.NetConfig.oppAvatar = data.opponent.avatar;
+        if (!GlobalVar.NetConfig.selfAvatar) {
+            let loadPlayAvatar = GlobalVar.GetHandler((tex2d) => {
+                GlobalVar.NetConfig.selfAvatar = tex2d;
+            }, this)
+            GlobalVar.Loader.loadExternalAsset(
+                data.you.avatar,
+                loadPlayAvatar
+            )
+            //GlobalVar.NetConfig.selfAvatar = data.you.avatar;
+        }
+        if (!GlobalVar.NetConfig.oppAvatar) {
+            let loadOppAvatar = GlobalVar.GetHandler((tex2d) => {
+                GlobalVar.NetConfig.oppAvatar = tex2d;
+            }, this)
+            GlobalVar.Loader.loadExternalAsset(
+                data.opponent.avatar,
+                loadOppAvatar
+            )
+            //GlobalVar.NetConfig.oppAvatar = data.opponent.avatar;
+        }
         GlobalVar.NetConfig.isConnect = true;
         GlobalVar.SetSeed(data.seed);
         GlobalVar.EventMgr.dispatchEvent(GlobalVar.CONST.EVENT.connectSuc);

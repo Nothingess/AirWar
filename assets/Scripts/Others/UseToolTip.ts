@@ -1,4 +1,5 @@
 import { UseToolTipMgr } from "../Systems/UISystem/IUISystem";
+import { timingSafeEqual } from "crypto";
 
 const { ccclass, property } = cc._decorator;
 
@@ -8,10 +9,14 @@ export class UseToolTip extends cc.Component {
 
     @property(cc.Node)
     arrow: cc.Node = null;
-
     @property(cc.Sprite)
     bufSp: cc.Sprite = null;
-    private mToolId: number = 0;
+    @property({ type: cc.Sprite, tooltip: "我方头像" })
+    avatar_l: cc.Sprite = null;
+    @property({ type: cc.Sprite, tooltip: "对方头像" })
+    avatar_r: cc.Sprite = null;
+    private mToolId: number = -1;
+    private mIsLoadAvatar: boolean = false;
 
     private mUseToolTipMgr: UseToolTipMgr = null;
 
@@ -32,12 +37,19 @@ export class UseToolTip extends cc.Component {
             ),
             cc.callFunc(() => {
                 this.bufSp.node.runAction(cc.sequence(
-                    cc.moveBy(1, cc.v2(-300, 0)),
-                    cc.fadeOut(1),
+                    cc.moveBy(2, cc.v2(-300, 0)),
+                    cc.fadeOut(2),
                     cc.callFunc(() => { this.recycle() })
                 ))
             })
         ))
+
+
+        //load avatar
+        if (!this.mIsLoadAvatar) {
+            this.initAvatar();
+            this.mIsLoadAvatar = true;
+        }
 
         if (this.mToolId === toolId) return;
         this.mToolId = toolId;
@@ -52,6 +64,29 @@ export class UseToolTip extends cc.Component {
         }, this)
 
         GlobalVar.Loader.loadRes(`${GlobalVar.CONST.BUFF_SKINPATH_IMG}${id}`, han, cc.SpriteFrame);
+    }
+    private initAvatar(): void {
+        this.setAvatar(this.avatar_l, GlobalVar.NetConfig.selfAvatar);
+        this.setAvatar(this.avatar_r, GlobalVar.NetConfig.oppAvatar);
+    }
+    private setAvatar(sp: cc.Sprite, tex2d: cc.Texture2D): void {
+        console.error(`头像精灵：${sp}, 路径：${tex2d}`);
+
+        if (!sp || !tex2d) return;//其一为 null or undefined
+        if (!!sp.spriteFrame) return;//已经加载过了
+        let sf: cc.SpriteFrame = new cc.SpriteFrame(tex2d);
+        sp.spriteFrame = sf;
+
+
+        /*         console.error('开始加载头像-----------------------------------');
+                
+                let han = GlobalVar.GetHandler((tex2d: cc.Texture2D) => {
+                    console.error('加载头像结束----------------------------------')
+                    let sf: cc.SpriteFrame = new cc.SpriteFrame(tex2d);
+                    sp.spriteFrame = sf;
+                }, this);
+        
+                GlobalVar.Loader.loadExternalAsset(path, han); */
     }
 
     public recycle(): void {
