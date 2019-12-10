@@ -70,7 +70,8 @@ export class MainUISystem extends IUISystem {
 
     private mRoleCtrl: RoleCtrl = null;             //玩家控制器
     private mBgCtrl: BgCtrl = null;                 //背景控制器
-    private mUseToolTipMgr: UseToolTipMgr = null;   //pk使用道具提示管理
+    //private mUseToolTipMgr: UseToolTipMgr = null;   //pk使用道具提示管理
+    //private mPropMgr: PropMgr = null;               //道具管理器
 
     //--------------组件、节点
     private mCamera: cc.Node = null;                //摄像机
@@ -108,16 +109,18 @@ export class MainUISystem extends IUISystem {
         this.initProTip();
 
         this.mBgCtrl = new BgCtrl(cc.find("contentLayer/bgCtrl", this.mUIRoot));
-        this.mUseToolTipMgr = new UseToolTipMgr();
+        //this.mUseToolTipMgr = new UseToolTipMgr();
+        //this.mPropMgr = new PropMgr();
 
         //test------------------
         this.mTest = cc.find('viewLayer/btn', this.mUIRoot);
     }
     private initPool(): void {
-        let effLayer: cc.Node = cc.find("contentLayer/eff_layer", this.mUIRoot);
-        let goldLayer: cc.Node = cc.find("contentLayer/gold_layer", this.mUIRoot);
-        let tipLayer: cc.Node = cc.find("tipLayer", this.mUIRoot);
-        let topLayer: cc.Node = cc.find('topLayer', this.mUIRoot)
+        let effLayer: cc.Node = cc.find('contentLayer/eff_layer', this.mUIRoot);
+        let goldLayer: cc.Node = cc.find('contentLayer/gold_layer', this.mUIRoot);
+        let tipLayer: cc.Node = cc.find('tipLayer', this.mUIRoot);
+        let topLayer: cc.Node = cc.find('topLayer', this.mUIRoot);
+        let alertLayer: cc.Node = cc.find('alertLayer', this.mUIRoot);
         if (!effLayer) return
         GlobalVar.PoolMgr.createNodePool(
             GoldEffect.type,
@@ -136,17 +139,23 @@ export class MainUISystem extends IUISystem {
             tipLayer,
             GlobalVar.CONST.SOCRE_TIP_PATH
         );
-        GlobalVar.PoolMgr.createNodePool(
+/*         GlobalVar.PoolMgr.createNodePool(
             UseToolTip.type,
             topLayer,
             GlobalVar.CONST.USE_TOOL_TIP_PATH,
             2
-        );
+        ); */
         GlobalVar.PoolMgr.createNodePool(
             UseToolAction.type,
             topLayer,
             GlobalVar.CONST.USE_TOOL_ACTION_PATH,
             2
+        )
+        GlobalVar.PoolMgr.createNodePool(
+            PropMgr.type,
+            alertLayer,
+            GlobalVar.CONST.PROP_ITEM_PAHT,
+            5
         )
     }
     /**创建角色 */
@@ -163,14 +172,16 @@ export class MainUISystem extends IUISystem {
             this.mRoleCtrl.logicUpdate(dt);
         }
         this.mBgCtrl.logicUpdate(dt);
-        this.mUseToolTipMgr.update(dt);
+        //this.mUseToolTipMgr.update(dt);
+        //this.mPropMgr.update(dt);
     }
     public endSys(): void {
         if (this.mRoleCtrl !== null) {
             this.mRoleCtrl.endSys();
         }
         this.mBgCtrl.end();
-        this.mUseToolTipMgr.end();
+        //this.mUseToolTipMgr.end();
+        //this.mPropMgr.end();
     }
 
     protected onEvent(): void {
@@ -329,9 +340,9 @@ export class MainUISystem extends IUISystem {
     }
     /**对方使用道具的提示 */
     public playUseToolTip(id: number): void {
-        if (this.mUseToolTipMgr) {
-            this.mUseToolTipMgr.playTip(id);
-        }
+        //if (this.mUseToolTipMgr) {
+            //this.mUseToolTipMgr.playTip(id);
+        //}
     }
     /**我方使用道具的提示 */
     public playUseToolAction(id: number, pos: cc.Vec2): void {
@@ -343,6 +354,12 @@ export class MainUISystem extends IUISystem {
                 sc.init(id);
             }
         }
+    }
+    /**获取道具 */
+    public getProp(id: number): void {
+        //if (this.mPropMgr) {
+        //    this.mPropMgr.addItem(id);
+        //}
     }
 
     public getNetSystem(): NetSystem {
@@ -360,7 +377,7 @@ export class MainUISystem extends IUISystem {
     public netShow(code: number): void {
         let path: string = `${
             (code === 0) ?
-                GlobalVar.CONST.UI_PATH.RECONNECT : GlobalVar.CONST.UI_PATH.OFFLINE
+                GlobalVar.CONST.Language_PATH.reconnect : GlobalVar.CONST.Language_PATH.offLine
             }${GlobalVar.NetConfig.language}`;
 
         let han = GlobalVar.GetHandler((sf) => {
@@ -469,5 +486,82 @@ export class UseToolTipMgr {
     }
     public end(): void {
 
+    }
+}
+
+interface Item {
+    id: number,
+    node: cc.Node,
+    RemainingTime: number
+}
+/**吃到的道具管理系统 */
+export class PropMgr {
+    public static type: string = 'PropItem';
+
+    private mRoot: cc.Vec2 = null;                  //根位置
+    private mItemWidth: number = 50;                //item 宽度
+    private mSpaceY: number = 10;                    //Y轴方向间隙
+    private mItemTimer: number = 5;                 //item 存在时间
+    private mItemList: Map<number, Item> = null;
+
+    constructor() {
+        this.init();
+    }
+
+    private init(): void {
+        this.mItemWidth = 50;
+        this.mSpaceY = 20;
+        this.mRoot = cc.v2(this.mItemWidth, GlobalVar.SysInfo.view.height * .35);
+        this.mItemList = new Map<number, Item>();
+    }
+    public update(dt): void {
+        if (this.mItemList.size <= 0) return;
+
+        let count = 0;
+        let targetY = 0;
+        let offsetY = 0;
+        this.mItemList.forEach((v, k) => {
+            targetY = this.mRoot.y + (this.mItemList.size - count - 1) * (this.mItemWidth + this.mSpaceY);
+            offsetY = targetY - v.node.y;
+            if (offsetY > 1) {
+                v.node.y += offsetY * .1;
+            }
+            this.checkRemove(v, dt);
+            count++;
+        })
+    }
+    public end(): void { }
+
+
+    //operation
+    public addItem(id: number): void {
+        if (this.mItemList.get(id)) return;
+        console.log('get item--------------------')
+        let han = GlobalVar.GetHandler((sf: cc.SpriteFrame) => {
+            let node: cc.Node = GlobalVar.PoolMgr.get(PropMgr.type);
+            if (node) {
+                node.setPosition(this.mRoot);
+                node.scale = 0;
+                node.getComponent(cc.Sprite).spriteFrame = sf;
+                node.runAction(cc.scaleTo(.2, 1.5));
+                this.mItemList.set(id, { id: id, node: node, RemainingTime: this.mItemTimer })
+            }
+        }, this)
+
+        GlobalVar.Loader.loadRes(`${GlobalVar.CONST.BUFF_SKINPATH_IMG}${id}`, han, cc.SpriteFrame);
+    }
+    private checkRemove(item: Item, dt: number): void {
+        item.RemainingTime -= dt;
+        if (item.RemainingTime <= 0) {
+            this.removeItem(item);
+        }
+    }
+    private removeItem(item: Item): void {
+        let node: cc.Node = item.node;
+        node.runAction(cc.sequence(
+            cc.scaleTo(.2, 0),
+            cc.callFunc(() => { GlobalVar.PoolMgr.put(PropMgr.type, node) })
+        ));
+        this.mItemList.delete(item.id);
     }
 }

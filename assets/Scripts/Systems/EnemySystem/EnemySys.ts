@@ -80,7 +80,7 @@ export class EnemySys extends ISystem {
         }
     }
     private setShortAddSpeed(): void {
-        (this.mFacade as MainFacade).getUISystem().playUseToolTip(1);
+        //(this.mFacade as MainFacade).getUISystem().playUseToolTip(1);
         GlobalVar.CurGameSpeed.isShortAddSpeed = this.mIsAddSpeed = true;
         setTimeout(() => {
             GlobalVar.CurGameSpeed.isShortAddSpeed = this.mIsAddSpeed = false;

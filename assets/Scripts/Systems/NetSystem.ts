@@ -80,7 +80,7 @@ export class NetSystem extends ISystem {
         switch (id) {
             case 0://召唤精英怪
                 (this.mFacade as MainFacade).getEnemySys().createEeEnemy();
-                (this.mFacade as MainFacade).getUISystem().playUseToolTip(id);
+                //(this.mFacade as MainFacade).getUISystem().playUseToolTip(id);
                 break;
             case 1://加速
                 (this.mFacade as MainFacade).getEnemySys().setAddSpeedState();
@@ -258,7 +258,8 @@ class HagoLC extends IPlatform {
     }): void {
         console.error(`onCreate : ${JSON.stringify(data)}`);
         GlobalVar.NetConfig.isAI = data.opponent.isAI;
-        if (!GlobalVar.NetConfig.selfAvatar) {
+        if (!GlobalVar.NetConfig.selfAvatar && !!data.you.avatar) {
+            console.log('load play avatar');
             let loadPlayAvatar = GlobalVar.GetHandler((tex2d) => {
                 GlobalVar.NetConfig.selfAvatar = tex2d;
             }, this)
@@ -268,7 +269,8 @@ class HagoLC extends IPlatform {
             )
             //GlobalVar.NetConfig.selfAvatar = data.you.avatar;
         }
-        if (!GlobalVar.NetConfig.oppAvatar) {
+        if (!GlobalVar.NetConfig.oppAvatar && !!data.opponent.avatar) {
+            console.log('load opp avatar');
             let loadOppAvatar = GlobalVar.GetHandler((tex2d) => {
                 GlobalVar.NetConfig.oppAvatar = tex2d;
             }, this)
@@ -287,7 +289,7 @@ class HagoLC extends IPlatform {
         GlobalVar.EventMgr.dispatchEvent(GlobalVar.CONST.EVENT.readyCountDown);
         setTimeout(() => {
             GlobalVar.EventMgr.dispatchEvent(GlobalVar.CONST.EVENT.start);
-        }, 3000);
+        }, 2000);
     }
     protected onCountDown(data: any): void {
         this.mNetSys.updateCountDown(data);

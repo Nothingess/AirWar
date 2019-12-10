@@ -116,6 +116,7 @@ export class MinEnemy extends IEnemy {//小怪
     }
     protected award(): void {
         super.award();
+        GlobalVar.EventMgr.dispatchEvent(GlobalVar.CONST.EVENT.eatScore, 100);
         this.noAwardDie();
     }
     public noAwardDie(): void {

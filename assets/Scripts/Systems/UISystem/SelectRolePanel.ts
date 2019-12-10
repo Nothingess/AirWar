@@ -42,8 +42,8 @@ class SelectBox {
 export class SelectRolePanel extends cc.Component {
     @property({ type: cc.Label, tooltip: '倒计时' })
     timerLa: cc.Label = null;
-    @property({ type: cc.Label, tooltip: '提示' })
-    showTipLa: cc.Label = null;
+    @property({ type: cc.Sprite, tooltip: '提示' })
+    showTipLa: cc.Sprite = null;
     @property({ type: cc.Label, tooltip: "准备倒计时" })
     readyTiemr: cc.Label = null;
 
@@ -217,24 +217,54 @@ export class SelectRolePanel extends cc.Component {
         GlobalVar.EventMgr.removeEventListenerByTag(GlobalVar.CONST.EVENT.readyCountDown, 'SelectRolePanel');
     }
     private onConnect(): void {
-        this.showTipLa.string = 'Select Role';
+        //this.showTipLa.string = 'Select Role';
+        this.loadShowTip(GlobalVar.CONST.Language_PATH.selectRole);
         this.startTimer();
     }
     private onStart(): void {
 
         this.unscheduleAllCallbacks();
         this.timerLa.string = '';
-        this.showTipLa.string = 'Ready';
+        //this.showTipLa.string = 'Ready';
+        this.loadShowTip(GlobalVar.CONST.Language_PATH.ready, true);
+        GlobalVar.AudioMgr.playSound(GlobalVar.CONST.ENUM.AUDIO_TYPE.ready);
+        setTimeout(() => {
+            this.loadShowTip(GlobalVar.CONST.Language_PATH.go, true);
+            GlobalVar.AudioMgr.playSound(GlobalVar.CONST.ENUM.AUDIO_TYPE.go);
+        }, 1000);
+        setTimeout(() => {
 
-        let timer: number = 3;
-        let ready = setInterval(() => {
-            this.playReadyCountDown(timer);
-            timer--;
-            if (timer < 0) {
-                clearInterval(ready);
-                this.node.destroy();
-            }
-        }, 1000)
+            let worldPos: cc.Vec2 = this.mRole.node.parent.convertToWorldSpaceAR(this.mRole.node.position);
+            let node: cc.Node = this.mRole.node;
+            node.setParent(cc.director.getScene());
+            node.setPosition(worldPos);
+            node.runAction(cc.sequence(
+                cc.spawn(
+                    cc.moveTo(.5, cc.v2(GlobalVar.SysInfo.view.width * .5,
+                        GlobalVar.SysInfo.view.width * .2)),
+                    cc.scaleTo(.5, .85),
+                ),
+                cc.callFunc(() => {
+                    GlobalVar.EventMgr.dispatchEvent(GlobalVar.CONST.EVENT.roleBirth);
+                    node.destroy();
+                })
+            ))
+
+            this.node.runAction(cc.sequence(
+                cc.fadeOut(.2),
+                cc.callFunc(() => { this.node.destroy(); })
+            ))
+        }, 2000);
+
+        /*         let timer: number = 3;
+                let ready = setInterval(() => {
+                    this.playReadyCountDown(timer);
+                    timer--;
+                    if (timer < 0) {
+                        clearInterval(ready);
+                        this.node.destroy();
+                    }
+                }, 1000) */
     }
     private startTimer(): void {
         let timer: number = 10;
@@ -313,7 +343,8 @@ export class SelectRolePanel extends cc.Component {
             cc.moveBy(.5, cc.v2(0, -300)).easing(cc.easeInOut(3))
         ));
 
-        this.showTipLa.string = 'Waiting for opponent';
+        //this.showTipLa.string = 'Waiting for opponent';
+        this.loadShowTip(GlobalVar.CONST.Language_PATH.waitForOpp);
         GlobalVar.EventMgr.dispatchEvent(GlobalVar.CONST.EVENT.ready);
     }
     private showOffLineTip(): void {
@@ -329,7 +360,7 @@ export class SelectRolePanel extends cc.Component {
             cc.fadeOut(.5)
         ))
 
-        let path: string = `${GlobalVar.CONST.UI_PATH.OFFLINE
+        let path: string = `${GlobalVar.CONST.Language_PATH.offLine
             }${GlobalVar.NetConfig.language}`;
 
         let han = GlobalVar.GetHandler((sf) => {
@@ -337,6 +368,28 @@ export class SelectRolePanel extends cc.Component {
         }, this)
 
         GlobalVar.Loader.loadRes(path, han, cc.SpriteFrame);
+    }
+
+    private loadShowTip(path: string, isAc?: boolean): void {
+        if (isAc) { this.showTipAc() }
+        path += GlobalVar.NetConfig.language;
+        let han = GlobalVar.GetHandler((sf: cc.SpriteFrame) => {
+            if (this.showTipLa) {
+                this.showTipLa.spriteFrame = sf;
+            }
+        }, this)
+
+        GlobalVar.Loader.loadRes(path, han, cc.SpriteFrame);
+
+    }
+    private showTipAc(): void {
+        this.showTipLa.node.scale = 5;
+        this.showTipLa.node.opacity = 0;
+
+        this.showTipLa.node.runAction(cc.spawn(
+            cc.scaleTo(.5, 2),
+            cc.fadeIn(.5)
+        ))
     }
 }
 

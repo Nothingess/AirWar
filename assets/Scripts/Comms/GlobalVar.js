@@ -147,36 +147,38 @@ GlobalVar.CONST = {
         playDie: 16,
         /**打开面板 */
         openPanel: 17,
+        /**角色生成初始话 */
+        roleBirth: 18,
 
 
         //Net
         /**连接成功 */
-        connectSuc: 18,
+        connectSuc: 19,
         /**准备就绪 */
-        ready: 19,
+        ready: 20,
         /**准备开始倒计时 */
-        readyCountDown: 20,
+        readyCountDown: 21,
         /**开始 */
-        start: 21,
+        start: 22,
         /**倒计时 */
-        countDown: 22,
+        countDown: 23,
         /**断线重连中 */
-        offLine: 23,
+        offLine: 24,
         /**重连成功 */
-        onLine: 24,
+        onLine: 25,
         /**重连失败 */
-        offLineEnd: 25,
+        offLineEnd: 26,
         /**游戏结束，进行结算 */
-        gameOver: 26,
+        gameOver: 27,
         /**网络断开，游戏结束 */
-        netClose: 27,
+        netClose: 28,
 
 
         /**移除道具 */
-        removeProp: 28,
+        removeProp: 29,
 
 
-        testUseTool: 29
+        testUseTool: 30
 
     },
     /**枚举类型 */
@@ -287,7 +289,9 @@ GlobalVar.CONST = {
             roleSkill_3: 10,
             useProp: 11,
             win: 12,
-            lose: 13
+            lose: 13,
+            ready: 14,
+            go: 15
         }
     },
     /**图片资源路径 and ui根目录*/
@@ -297,11 +301,7 @@ GlobalVar.CONST = {
         /**面板预制资源路径 */
         PANEL_PATH: "prefabs/uiPanels/",
         /**图片资源加载根路径 */
-        IMGS_PATH: "imgs/",
-        /**网络重连图片路径 */
-        RECONNECT: 'language/reconnect_',
-        /**网络断开图片路径 */
-        OFFLINE: 'language/offLine_'
+        IMGS_PATH: "imgs/"
     },
     /**音效资源路径 */
     AUDIO_PATH: [
@@ -319,6 +319,8 @@ GlobalVar.CONST = {
         'audios/useProp',
         'audios/win',
         'audios/lose',
+        'audios/ready',
+        'audios/go'
     ],
     /**spine数据路径 */
     ANIM_PATH: {
@@ -358,6 +360,25 @@ GlobalVar.CONST = {
             /**召唤师 */
             ZHS: "anims/boss_zhs/ZHS"
         }
+    },
+    /**语言包路径 */
+    Language_PATH: {
+        /**boss来袭 */
+        bossComing: 'language/bossComing_',
+        /**loading */
+        loading: 'language/loading_',
+        /**离线 */
+        offLine: 'language/offLine_',
+        /**准备结束 */
+        ready: 'language/ready_',
+        /**go */
+        go: 'language/go_',
+        /**重连中 */
+        reconnect: 'language/reconnect_',
+        /**选择角色 */
+        selectRole: 'language/selectRole_',
+        /**等待对手 */
+        waitForOpp: 'language/waitForOpp_'
     },
     /**角色预制路径 pre */
     ROLE_SKINPATH: "prefabs/roles/role",
@@ -417,6 +438,8 @@ GlobalVar.CONST = {
     USE_TOOL_ACTION_PATH: "prefabs/others/useToolAction",
     /**复活无敌罩 */
     COVER_PATH: "prefabs/others/cover",
+    /**道具item pre */
+    PROP_ITEM_PAHT: "prefabs/others/propItem",
 
 
     ///UI
@@ -521,6 +544,7 @@ if (typeof (hg) !== 'undefined') {
 
     //获取匹配信息
     let matchupInfo = hg.getMatchupInfo();
+    GlobalVar.NetConfig.selfAvatar = true;
     let loadPlayAvatar = GlobalVar.GetHandler((tex2d) => {
         GlobalVar.NetConfig.selfAvatar = tex2d;
     }, this)
@@ -540,6 +564,7 @@ if (typeof (hg) !== 'undefined') {
         uids: [optObj.ai_info.uid],
         success: function (res) {
             console.error("getUserInfoByUids result:" + JSON.stringify(res))
+            GlobalVar.NetConfig.oppAvatar = true;
             let loadOppAvatar = GlobalVar.GetHandler((tex2d) => {
                 GlobalVar.NetConfig.oppAvatar = tex2d;
             }, this)

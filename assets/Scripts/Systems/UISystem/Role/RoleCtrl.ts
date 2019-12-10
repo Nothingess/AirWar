@@ -33,7 +33,7 @@ export class RoleCtrl {
     private mSkill: ISkill = null;              //技能系统
     //other
     private mIsInvincible: boolean = false;     //是否无敌
-    private mIsCanFire: boolean = true;         //是否能射击
+    private mIsCanFire: boolean = false;         //是否能射击
     private misDie: boolean = false;            //是否死亡
     /**是否无敌 */
     public isInvincible(): boolean { return this.mIsInvincible }
@@ -97,8 +97,9 @@ export class RoleCtrl {
             if (roleCollider) { roleCollider.setRole(this) }
             if (this.mTouchArea != null) {
                 this.mRoleObj.parent = this.mTouchArea;
-                this.mRoleObj.setPosition(this.mTouchArea.width * .5, -200);
-                this.birth();
+                this.mRoleObj.setPosition(this.mTouchArea.width * .5, this.mTouchArea.height * .2);
+                this.mRoleObj.opacity = 0;
+                //this.birth();
             }
             this.mPetMgr = new PetMgr(this.mRoleObj);
         }, this)
@@ -148,6 +149,7 @@ export class RoleCtrl {
         GlobalVar.EventMgr.addEventListener(GlobalVar.CONST.EVENT.getPet, this.getPet.bind(this), "RoleCtrl");
         GlobalVar.EventMgr.addEventListener(GlobalVar.CONST.EVENT.releaseSkills, this.releaseSkill.bind(this), 'RoleCtrl');
         GlobalVar.EventMgr.addEventListener(GlobalVar.CONST.EVENT.testUseTool, this.eatBuff.bind(this), 'RoleCtrl');
+        GlobalVar.EventMgr.addEventListener(GlobalVar.CONST.EVENT.roleBirth, this.birth.bind(this), 'RoleCtrl');
     }
     private offEvents(): void {
         this.mTouchArea.off('touchstart', this.onTouchStart, this);
@@ -159,6 +161,7 @@ export class RoleCtrl {
         GlobalVar.EventMgr.removeEventListenerByTag(GlobalVar.CONST.EVENT.getPet, "RoleCtrl");
         GlobalVar.EventMgr.removeEventListenerByTag(GlobalVar.CONST.EVENT.releaseSkills, 'RoleCtrl');
         GlobalVar.EventMgr.removeEventListenerByTag(GlobalVar.CONST.EVENT.testUseTool, 'RoleCtrl');
+        GlobalVar.EventMgr.removeEventListenerByTag(GlobalVar.CONST.EVENT.roleBirth, 'RoleCtrl');
     }
     private onTouchStart(e): void {
         if (this.misDie) return;
@@ -302,12 +305,17 @@ export class RoleCtrl {
      * 生成玩家 初始化其位置
     */
     private birth(): void {
+
+        if (!this.mRoleObj) return;
+
         this.mIsInvincible = true;
-        this.mIsCanFire = false;
         this.playStand();
+
+        this.mRoleObj.setPosition(cc.v2(GlobalVar.SysInfo.view.width * .5, GlobalVar.SysInfo.view.height * .2));
+        this.mRoleObj.opacity = 255;
+        this.mIsCanFire = true;
+
         this.mRoleObj.runAction(cc.sequence(
-            cc.moveBy(1, cc.v2(0, 450)),
-            cc.callFunc(() => { this.mIsCanFire = true }),
             cc.delayTime(2),
             cc.callFunc(() => {
                 this.mIsInvincible = false;
@@ -404,6 +412,9 @@ export class RoleCtrl {
                 break;
         }
 
+        //if (id !== GlobalVar.CONST.ENUM.BUFF_ID.gold) {
+        //    this.getProp(id);
+        //}
         GlobalVar.AudioMgr.playSound(audioId);
     }
     /**
@@ -413,6 +424,9 @@ export class RoleCtrl {
     private useToolToOpp(id: number): void {
         this.mUISys.getNetSystem().useTool(id);
         this.mUISys.playUseToolAction(id, this.getRoleNode().position);
+    }
+    private getProp(id: number): void {
+        this.mUISys.getProp(id);
     }
 
 
@@ -448,6 +462,8 @@ class ISkill {
     protected mState: number = -1;              //攻击状态（-1待机，1正在攻击）
     protected mFrequency: number = .2;          //攻击频率
     protected mStepFrequency: number = .2;      //暂存攻击频率
+    protected mSoundInterval: number = .5;      //音效频率
+    protected mStepSoundInt: number = .5;       //暂存音效频率
     protected mIsStart: boolean = false;
 
     protected mCb: Function = null;
@@ -474,6 +490,9 @@ class ISkill {
     }
 
     public update(dt): void {
+        if (this.mSoundInterval > 0) {
+            this.mSoundInterval -= dt;
+        }
         switch (this.mState) {
             case -1:
                 this.updateWait(dt);
@@ -503,8 +522,11 @@ class ISkill {
         }
     }
     /**攻击 */
-    protected attk(): void { 
-        this.playSkillAudio();
+    protected attk(): void {
+        if (this.mSoundInterval <= 0) {
+            this.playSkillAudio();
+            this.mSoundInterval = this.mStepSoundInt;
+        }
     }
     /**播放攻击提示 */
     protected attkTip(): cc.Node {

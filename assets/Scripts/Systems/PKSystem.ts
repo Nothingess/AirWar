@@ -31,7 +31,7 @@ export class PKSystem extends ISystem {
             this.mBossList.push(tempArr[index])
             tempArr.splice(index, 1);
         }
-        
+
         //this.mBossList = [1, 0, 2, 2]
         console.log(`boss coming arr : ${this.mBossList}`);
 
@@ -309,8 +309,8 @@ class MinMonsterState extends AIState {
     }
     /**杀死一波小怪 */
     public killBoutMonster(): void {
-        let count: number = Math.floor(Math.random() * 4);//随机击杀个数
-        let goldCount: number = Math.floor(Math.random() * 4);//随机拾取金币个数
+        let count: number = Math.floor(Math.random() * 4) + 2;//随机击杀个数
+        let goldCount: number = Math.floor(Math.random() * 6);//随机拾取金币个数
 
         let score: number = (count + goldCount) * 100;
         if (count === 5) { score += 200 }
@@ -335,7 +335,7 @@ class AddSpeedStaet extends AIState {
 
         this.mInterval -= dt;
         if (this.mInterval < 0) {
-            this.mInterval = Math.random() * .5 + .5;
+            this.mInterval = Math.random() * .2 + .3;
             this.getScore(100);
         }
     }
@@ -391,7 +391,7 @@ class BossState extends AIState {
     }
 
     public getBossAward(): void {
-        let score: number = 1500 + Math.floor(Math.random() * 4) * 100;
+        let score: number = 2000 + (Math.floor(Math.random() + 2) * 4) * 100;
         this.getScore(score);
     }
 }

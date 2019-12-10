@@ -1,16 +1,16 @@
 {
   "ver": "2.3.1",
-  "uuid": "8acf800a-e978-46a7-ad76-6af004086f90",
+  "uuid": "77e4d227-cccb-4a5e-8cce-52471829cad8",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "bilinear",
   "premultiplyAlpha": false,
   "platformSettings": {},
   "subMetas": {
-    "btn_blue": {
+    "bossComing_en": {
       "ver": "1.0.4",
-      "uuid": "99a0d690-de6c-45ab-bbb9-39701b3c9c0d",
-      "rawTextureUuid": "8acf800a-e978-46a7-ad76-6af004086f90",
+      "uuid": "96096399-c2bc-4c1c-99f3-83d63b1ebe49",
+      "rawTextureUuid": "77e4d227-cccb-4a5e-8cce-52471829cad8",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": false,
@@ -18,14 +18,14 @@
       "offsetY": 0,
       "trimX": 0,
       "trimY": 0,
-      "width": 250,
-      "height": 73,
-      "rawWidth": 250,
-      "rawHeight": 73,
+      "width": 265,
+      "height": 45,
+      "rawWidth": 265,
+      "rawHeight": 45,
       "borderTop": 0,
       "borderBottom": 0,
-      "borderLeft": 29,
-      "borderRight": 24,
+      "borderLeft": 0,
+      "borderRight": 0,
       "subMetas": {}
     }
   }

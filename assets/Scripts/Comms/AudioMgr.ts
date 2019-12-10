@@ -32,7 +32,7 @@ export class AudioMgr {
 
     public playSound(type: number, loop?: boolean, volume?: number): void {
         if (this.mIsMuteEff) return;
-        if (this.mCurEffCount >= 20) return;//同时多于五个音效不继续播放
+        if (this.mCurEffCount >= 10) return;//同时多于五个音效不继续播放
 
         this.mCurEffCount++;
         let path: string = GlobalVar.CONST.AUDIO_PATH[type];

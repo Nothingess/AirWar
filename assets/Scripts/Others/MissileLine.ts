@@ -82,7 +82,10 @@ export class MissileLine extends cc.Component {
     }
 
     update(dt): void {
-        this.mDir = (this.node.x > this.mTargetNode.x) ? -1 : ((this.node.x < this.mTargetNode.x) ? 1 : 0);
+        if (!this.mTargetNode) { this.mDir = 0 }
+        else {
+            this.mDir = (this.node.x > this.mTargetNode.x) ? -1 : ((this.node.x < this.mTargetNode.x) ? 1 : 0);
+        }
 
         this.mMoveLength += this.mDir * dt * this.mMoveSpeed;
         if (this.mMoveLength > this.mBorder) { this.mMoveLength = this.mBorder }

@@ -12,6 +12,8 @@ export class BossEnemy extends IEnemy {//BOSS
     protected mAttInterval: number = 3;           //攻击频率
     protected mStepInterval: number = 3;          //暂存攻击间隔
     protected mAttPos: cc.Vec2 = null;            //攻击位置
+    protected mIsCanPlayAudio: boolean = true;    //是否能够播放音效
+    protected mPlayAudioInterval: number = .5;    //播放音效间隔
 
     protected mIsReady: boolean = false;          //是否准备好了
 
@@ -97,6 +99,13 @@ export class BossEnemy extends IEnemy {//BOSS
         if (!this.mIsReady) return;//boss没准备好
         super.beAttack(val);
         this.bar.fillRange = this.mHp / this.mMaxHp;
+        if (this.mIsCanPlayAudio) {
+            this.mIsCanPlayAudio = false;
+            setTimeout(() => {
+                this.mIsCanPlayAudio = true;
+            }, this.mPlayAudioInterval);
+            GlobalVar.AudioMgr.playSound(GlobalVar.CONST.ENUM.AUDIO_TYPE.monsterDie);
+        }
     }
     /**攻击 */
     protected attack(): void {

@@ -33,7 +33,7 @@ export class PropSystem extends ISystem {
 
     private eatPower(): void {
         if (this.mCurPro >= this.mMaxPro) return;
-        this.mCurPro += 10;
+        this.mCurPro += 2;
         this.updatePro();
     }
     public clearPowerPro(): void {

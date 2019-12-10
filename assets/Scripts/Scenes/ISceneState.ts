@@ -105,6 +105,7 @@ export class MainScene extends ISceneState {
             GlobalVar.CONST.USE_TOOL_TIP_PATH,
             GlobalVar.CONST.USE_TOOL_ACTION_PATH,
             GlobalVar.CONST.COVER_PATH,
+            GlobalVar.CONST.PROP_ITEM_PAHT,
 
             //ui
             GlobalVar.CONST.SOCRE_TIP_PATH,
@@ -120,6 +121,11 @@ export class MainScene extends ISceneState {
             `${GlobalVar.CONST.BUFF_SKINPATH_IMG}${7}`,
             `${GlobalVar.CONST.BUFF_SKINPATH_IMG}${8}`,
             `${GlobalVar.CONST.BUFF_SKINPATH_IMG}${9}`,
+
+            `${GlobalVar.CONST.Language_PATH.ready}${GlobalVar.NetConfig.language}`,
+            `${GlobalVar.CONST.Language_PATH.go}${GlobalVar.NetConfig.language}`,
+            `${GlobalVar.CONST.Language_PATH.selectRole}${GlobalVar.NetConfig.language}`,
+            `${GlobalVar.CONST.Language_PATH.waitForOpp}${GlobalVar.NetConfig.language}`,
 
             //panel
             'prefabs/uiPanels/CloseAnAccountPanel',
