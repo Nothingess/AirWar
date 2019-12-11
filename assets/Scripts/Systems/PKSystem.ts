@@ -128,6 +128,17 @@ export class PKSystem extends ISystem {
         super.endSys();
         this.offEvents();
     }
+
+
+
+
+
+    ///AI check score---------------------------------
+    /**获取玩家分数 */
+    public getPlayScore(): number {
+        if (!this.mSelfPlayer) return 0;
+        return this.mSelfPlayer.getScore();
+    }
 }
 
 class IPlayer {
@@ -206,11 +217,35 @@ class AI extends Oppoent {
     }
     public updateOppScore(val: number): void {
         if (this.mIsEnd) return;
-        this.mScoreVal += val;
+        this.checkAIScore(val);
         if (this.mPkSys) {
             //this.mPkSys.updateScoreUI(this.mId, this.mScoreVal);
             (this.mPkSys.getFacade() as MainFacade).getNetSystem().uploadOppScore(this.mScoreVal);
         }
+    }
+    /**检测ai分数，合理化 */
+    private checkAIScore(val: number): void {
+        let playerScore: number = this.mPkSys.getPlayScore();
+        let offset: number = 0;
+        if (this.mScoreVal > playerScore) {//ai 分数大于玩家分数
+
+            offset = this.mScoreVal - playerScore;
+            if (offset > (playerScore * .3)) {
+                val -= 100;
+            }
+
+        } else if (this.mScoreVal < playerScore) {//ai 分数小于玩家分数
+            if (this.mScoreVal > 2000) {
+                offset = playerScore - this.mScoreVal;
+
+                if (offset > (this.mScoreVal * .5)) {
+                    val += 200;
+                } else if (offset > (this.mScoreVal * .3)) {
+                    val += 100;
+                }
+            }
+        }
+        this.mScoreVal += val;
     }
     /**ai使用道具 */
     public useTool(id: number): void {
@@ -275,14 +310,15 @@ class AIState {
     }
 
     protected getScore(val: number): void {
+        if (!this.mAIStateMgr) return;
         this.mAIStateMgr.getScore(val);
     }
 }
 
 class MinMonsterState extends AIState {
 
-    private mBoutTime: number = 2.8;    //一波小怪的时间
-    private mStepBoutTime: number = 2.8;
+    private mBoutTime: number = 3.2;    //一波小怪的时间
+    private mStepBoutTime: number = 3.2;
     private mUseToolTime: number = Math.random() * 10 + 5;
     private mIsUseTool: boolean = false;
 
@@ -312,10 +348,13 @@ class MinMonsterState extends AIState {
         let count: number = Math.floor(Math.random() * 4) + 2;//随机击杀个数
         let goldCount: number = Math.floor(Math.random() * 6);//随机拾取金币个数
 
-        let score: number = (count + goldCount) * 100;
+        let score: number = count * 100;
         if (count === 5) { score += 200 }
 
         this.getScore(score);
+        setTimeout(() => {
+            this.getScore(goldCount * 100);
+        }, 2000);
     }
     /**ai使用道具 */
     public useTool(id: number): void {
@@ -356,16 +395,16 @@ class BossState extends AIState {
         let id: number = this.mAIStateMgr.getCurBossId();
         switch (id) {
             case 0://老一
-                this.mBossTimer = Math.random() * 10 + 20;
+                this.mBossTimer = Math.random() * 10 + 10;
                 break;
             case 1://老二
-                this.mBossTimer = Math.random() * 10 + 40;
+                this.mBossTimer = Math.random() * 10 + 20;
                 break;
             case 2://老三
-                this.mBossTimer = Math.random() * 10 + 35;
+                this.mBossTimer = Math.random() * 10 + 25;
                 break;
             case 3://老四
-                this.mBossTimer = Math.random() * 10 + 35;
+                this.mBossTimer = Math.random() * 10 + 25;
                 break;
 
             default:

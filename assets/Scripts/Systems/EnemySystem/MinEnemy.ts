@@ -114,6 +114,13 @@ export class MinEnemy extends IEnemy {//小怪
     protected isRecycle(): boolean {
         return (this.node.y < -100);
     }
+    private explode():void{
+        if (this.mIsDie) return;
+        this.mIsDie = true;
+
+        this.award();
+        this.recycle();
+    }
     protected award(): void {
         super.award();
         GlobalVar.EventMgr.dispatchEvent(GlobalVar.CONST.EVENT.eatScore, 100);
@@ -164,7 +171,7 @@ export class MinEnemy extends IEnemy {//小怪
     }
     private changeFlyState(isAddSpeed: boolean): void {
         if (!isAddSpeed) {
-            this.die();
+            this.explode();
         }
     }
 

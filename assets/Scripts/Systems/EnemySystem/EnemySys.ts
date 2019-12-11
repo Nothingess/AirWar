@@ -29,7 +29,7 @@ export class EnemySys extends ISystem {
     private mBulletLayer: cc.Node = null;               //子弹所在层级
     private mEnemyState: IEnemyState = null;            //敌人波次
 
-    private mLevel: number = 0;                         //游戏关卡
+    private mLevel: number = 0;                         //游戏关卡（由服务端决定关卡顺序）
     private mMinMonsterStrengthLv = 0;                  //小怪强度等级
     private mIsGameOver: boolean = false;               //游戏结束
 
@@ -262,13 +262,15 @@ export class EnemySys extends ISystem {
         if (this.mEnemyState.getID() == EnemyState.boss
             || this.mEnemyState.getID() == EnemyState.addSpeed) return;
 
-        let count: number = Math.floor(Math.random() * 2) + ((this.mLevel > 0) ? 3 : 0);
+        //let count: number = Math.floor(Math.random() * 2) + ((this.mLevel > 0) ? 3 : 0);
+        let baseCount: number = (this.mMinMonsterStrengthLv < 2) ? 1 : 3;
+        let count: number = baseCount + Math.floor(Math.random() * 3);
         let id = setInterval(() => {
+            count--;
+            if (count < 0) { clearInterval(id); return; }
             this.createGuidedMissile(cc.v2(this.mPointList[
                 Math.floor(Math.random() * 5)
             ], GlobalVar.SysInfo.view.height + 100));
-            count--
-            if (count < 0) { clearInterval(id) }
         }, 300)
     }
     /**
@@ -281,7 +283,7 @@ export class EnemySys extends ISystem {
             miss.setPosition(cc.v2(pos.x, GlobalVar.SysInfo.view.height * .5));
 
             let gmEnemy: MissileLine = miss.getComponent(MissileLine);
-            if (gmEnemy) { gmEnemy.init(this, this.getRoleNode(), (this.mLevel > 0 ? true : false)); }
+            if (gmEnemy) { gmEnemy.init(this, this.getRoleNode(), (this.mMinMonsterStrengthLv > 0 ? true : false)); }
         }
     }
     //#endregion
@@ -385,6 +387,7 @@ export class EnemySys extends ISystem {
         //this.mLevel += 1
         //this.mLevel = this.mLevel > 3 ? 0 : this.mLevel;
         this.mMinMonsterStrengthLv++;
+
 
         this.setCurLevel();
         this.setEnemyState(new EyWait(this));

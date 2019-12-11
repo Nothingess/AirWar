@@ -97,9 +97,8 @@ export class RoleCtrl {
             if (roleCollider) { roleCollider.setRole(this) }
             if (this.mTouchArea != null) {
                 this.mRoleObj.parent = this.mTouchArea;
-                this.mRoleObj.setPosition(this.mTouchArea.width * .5, this.mTouchArea.height * .2);
+                this.mRoleObj.setPosition(cc.v2(GlobalVar.SysInfo.view.width * .5, -GlobalVar.SysInfo.view.height * .2));
                 this.mRoleObj.opacity = 0;
-                //this.birth();
             }
             this.mPetMgr = new PetMgr(this.mRoleObj);
         }, this)
@@ -267,10 +266,12 @@ export class RoleCtrl {
 
         if (this.mIsInvincible) {//无敌冲锋
             this.playSpurt();
+            this.sprint();
             GlobalVar.AudioMgr.playSound(GlobalVar.CONST.ENUM.AUDIO_TYPE.invincible);
         }
         else {
             this.playStand();
+            this.stopSprint();
         }
     }
     private getPet(lv: number): void {
@@ -290,7 +291,7 @@ export class RoleCtrl {
         this.stopDouble();
         this.mSkill.setWait();
 
-        this.mRoleObj.setPosition(cc.v2(375, -200));
+        this.mRoleObj.setPosition(cc.v2(GlobalVar.SysInfo.view.width * .5, -GlobalVar.SysInfo.view.height * .2));
         this.mRoleObj.active = false;
 
         setTimeout(() => {
@@ -331,7 +332,7 @@ export class RoleCtrl {
         this.mIsCanFire = false;
         this.mRoleObj.active = true;
         this.mRoleObj.runAction(cc.sequence(
-            cc.moveBy(2, cc.v2(0, 450)),
+            cc.moveBy(2, cc.v2(0, GlobalVar.SysInfo.view.height * .4)),
             cc.callFunc(() => { this.mIsCanFire = true }),
             cc.delayTime(2),
             cc.callFunc(() => {
@@ -349,6 +350,15 @@ export class RoleCtrl {
 
         if (this.mCover) { this.mCover.scale = 1 }
     }
+    /**冲刺 */
+    private sprint(): void {
+        this.mRoleObj.runAction(cc.moveBy(.3, cc.v2(0, 150)));
+    }
+    /**停止冲刺 */
+    private stopSprint(): void {
+        this.mRoleObj.runAction(cc.moveBy(.3, cc.v2(0, -150)))
+    }
+
     /**获取玩家节点 */
     public getRoleNode(): cc.Node {
         if (this.mRoleObj) { return this.mRoleObj };
@@ -440,6 +450,7 @@ export class RoleCtrl {
     private playSpurt(): void {
         if (!this.mSpine) return;
         this.mSpine.setAnimation(0, 'spurt', true);
+
     }
     /**死亡 */
     private playDie(): void {
@@ -462,7 +473,7 @@ class ISkill {
     protected mState: number = -1;              //攻击状态（-1待机，1正在攻击）
     protected mFrequency: number = .2;          //攻击频率
     protected mStepFrequency: number = .2;      //暂存攻击频率
-    protected mSoundInterval: number = .5;      //音效频率
+    protected mSoundInterval: number = .3;      //音效频率
     protected mStepSoundInt: number = .5;       //暂存音效频率
     protected mIsStart: boolean = false;
 
@@ -562,6 +573,10 @@ class MageSkill extends ISkill {
         GlobalVar.SysInfo.view.width * .5 + 180,
     ]
     private mIndex: number = 0;
+    constructor(roleCtrl: RoleCtrl) {
+        super(roleCtrl);
+        this.mSoundInterval = this.mStepSoundInt = this.mFrequency;
+    }
 
     protected attk(): void {
         super.attk();
@@ -600,6 +615,7 @@ class MechaSkill extends ISkill {
     constructor(roleCtrl: RoleCtrl) {
         super(roleCtrl);
         this.mFrequency = this.mStepFrequency = .1;
+        this.mSoundInterval = this.mStepSoundInt = .3;
     }
 
     protected attk(): void {
@@ -635,6 +651,10 @@ class ElfSkill extends ISkill {
             90 * Math.PI / 180,
             135 * Math.PI / 180
         ]; */
+    constructor(roleCtrl: RoleCtrl) {
+        super(roleCtrl);
+        this.mSoundInterval = this.mStepSoundInt = this.mFrequency;
+    }
 
     protected attk(): void {
         super.attk();

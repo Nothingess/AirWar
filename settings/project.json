@@ -28,6 +28,8 @@
       false,
       false,
       true,
+      false,
+      null,
       false
     ],
     [
@@ -35,6 +37,15 @@
       false,
       false,
       true,
+      false,
+      false
+    ],
+    [
+      false,
+      false,
+      false,
+      false,
+      false,
       false,
       false
     ]
@@ -83,7 +94,8 @@
     "pyBullet",
     "role",
     "buff",
-    "eyBullet"
+    "eyBullet",
+    "none"
   ],
   "last-module-event-record-time": 1575531313148,
   "simulator-orientation": false,
@@ -91,7 +103,6 @@
     "height": 640,
     "width": 960
   },
-  "start-scene": "current",
   "use-customize-simulator": true,
   "use-project-simulator-setting": false
 }

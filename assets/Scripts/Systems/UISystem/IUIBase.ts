@@ -180,6 +180,7 @@ export class CloseAnAccountPanel extends IUIBase {
         GlobalVar.AudioMgr.stopBgm();
         let audioPath: number = (this.mArgs[0] === 2) ? GlobalVar.CONST.ENUM.AUDIO_TYPE.lose : GlobalVar.CONST.ENUM.AUDIO_TYPE.win;
         GlobalVar.AudioMgr.playSound(audioPath);
+        GlobalVar.AudioMgr.changeEffState();
     }
     private lightRot(): void {
         this.mLight.node.runAction(cc.repeatForever(cc.rotateBy(5, 360)))

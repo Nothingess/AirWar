@@ -10,7 +10,7 @@ export class AudioMgr {
     private mIsMuteBgm: boolean = false;
     private mIsMuteEff: boolean = false;
 
-    private mCurEffCount: number = 0;
+    //private mCurEffCount: number = 0;
 
     /**切换背景音乐状态 */
     public changeBgmState(): boolean {
@@ -32,16 +32,16 @@ export class AudioMgr {
 
     public playSound(type: number, loop?: boolean, volume?: number): void {
         if (this.mIsMuteEff) return;
-        if (this.mCurEffCount >= 10) return;//同时多于五个音效不继续播放
+        //if (this.mCurEffCount >= 10) return;//同时多于五个音效不继续播放
 
-        this.mCurEffCount++;
+        //this.mCurEffCount++;
         let path: string = GlobalVar.CONST.AUDIO_PATH[type];
 
         let han = GlobalVar.GetHandler((clip: cc.AudioClip) => {
             let audioId: number = cc.audioEngine.play(clip, loop ? loop : false, volume)
-            cc.audioEngine.setFinishCallback(audioId, () => {
+            /* cc.audioEngine.setFinishCallback(audioId, () => {
                 this.mCurEffCount--;
-            });
+            }); */
         }, this)
 
         GlobalVar.Loader.loadRes(path, han, cc.AudioClip);

@@ -54,10 +54,11 @@ export class PropSystem extends ISystem {
     /**生成道具的id，为-1则默认金币 */
     private getPropID(): number {
         let ran: number = Math.random();
-        if (ran < .85) { return -1; }
+        if (ran < .80) { return -1; }
         ran = Math.random();
         if (ran > .75) return GlobalVar.CONST.ENUM.BUFF_ID.up;
         else if (ran > .6) return GlobalVar.CONST.ENUM.BUFF_ID.laser;
+
         //let id: number = ;
         //console.log(id, this.mPropList[id]);
         return this.mPropList[Math.floor(Math.random() * this.mPropList.length)];

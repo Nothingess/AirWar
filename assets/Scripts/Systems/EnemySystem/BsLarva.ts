@@ -83,8 +83,15 @@ export class BsLarva extends BossEnemy {
             this.break();
         }
         this.bar.fillRange = this.mHp / this.mMaxHp;
-
         this.powerGranule();
+
+        if (this.mIsCanPlayAudio) {
+            this.mIsCanPlayAudio = false;
+            setTimeout(() => {
+                this.mIsCanPlayAudio = true;
+            }, this.mPlayAudioInterval);
+            GlobalVar.AudioMgr.playSound(GlobalVar.CONST.ENUM.AUDIO_TYPE.boss);
+        }
     }
     //#endregion
 

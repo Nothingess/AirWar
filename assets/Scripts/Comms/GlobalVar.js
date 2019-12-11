@@ -240,7 +240,9 @@ GlobalVar.CONST = {
             /**激光炮（碰撞分组group属于pyBullet, 只是tag不一样） */
             laserGun: 6,
             /**敌人boss（碰撞分组group属于enemy， 只是tag不一样，用来区分标识enemy和boss） */
-            boss: 7
+            boss: 7,
+            /**buff 触发器：吃buff（碰撞分组group属于role, 只是tag不一样，用来区别role和buffTrigger） */
+            buffTrigger:8
         },
         /**道具id分类 */
         BUFF_ID: {
@@ -291,7 +293,8 @@ GlobalVar.CONST = {
             win: 12,
             lose: 13,
             ready: 14,
-            go: 15
+            go: 15,
+            boss:16
         }
     },
     /**图片资源路径 and ui根目录*/
@@ -320,7 +323,8 @@ GlobalVar.CONST = {
         'audios/win',
         'audios/lose',
         'audios/ready',
-        'audios/go'
+        'audios/go',
+        'audios/boss'
     ],
     /**spine数据路径 */
     ANIM_PATH: {

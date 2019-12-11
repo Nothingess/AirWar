@@ -1,12 +1,17 @@
 import { GMEnemy } from "../Systems/EnemySystem/GMEnemy";
 import { EnemySys } from "../Systems/EnemySystem/EnemySys";
 
-const { ccclass } = cc._decorator;
+const { ccclass, property } = cc._decorator;
 /**导弹线 */
 @ccclass
 export class MissileLine extends cc.Component {
 
     public static type: string = 'MissileLine';
+
+    @property({ type: cc.Node, tooltip: 'line' })
+    line: cc.Node = null;
+    @property({ type: cc.Node, tooltip: 'head' })
+    head: cc.Node = null;
 
     private mEnemySys: EnemySys = null;         //敌人系统
     private mTargetNode: cc.Node = null;        //目标节点
@@ -31,23 +36,28 @@ export class MissileLine extends cc.Component {
     /**准备阶段 */
     private prepare(): void {
         this.node.stopAllActions();
-        this.node.height = GlobalVar.SysInfo.view.height * 1.2;
-        this.node.y = GlobalVar.SysInfo.view.height;
-        this.node.setScale(1, 1);
-        this.node.opacity = 0;
-        //准备阶段结束 回调：开火
+        this.head.stopAllActions();
+        this.line.stopAllActions();
+        this.node.y = GlobalVar.SysInfo.view.height * .85;
+        this.head.scale = 0;
+        this.line.setScale(1, 1);
+        this.head.runAction(cc.scaleTo(.5, 1.5).easing(cc.easeBackOut()));
+        let scaleY: number = GlobalVar.SysInfo.view.height / this.line.height;
+        this.line.runAction(cc.sequence(
+            cc.delayTime(.5),
+            cc.scaleTo(.3, 1, scaleY)
+        ))
+
+        let action = (dur: number) => {
+            return cc.sequence(
+                cc.fadeOut(dur),
+                cc.fadeIn(dur)
+            )
+        }
         this.node.runAction(cc.sequence(
-            cc.spawn(
-                cc.moveBy(.3, cc.v2(0, -GlobalVar.SysInfo.view.height * .1)),
-                cc.fadeIn(.3)
-            ),
-            cc.spawn(
-                cc.sequence(
-                    cc.blink(2, 8),
-                    cc.blink(1.4, 2)
-                ),
-                cc.scaleTo(3.5, 2, 1)
-            ),
+            cc.delayTime(1),
+            cc.repeat(action(.5), 2),
+            cc.repeat(action(.35), 2),
             cc.callFunc(() => {
                 this.fire();
             })

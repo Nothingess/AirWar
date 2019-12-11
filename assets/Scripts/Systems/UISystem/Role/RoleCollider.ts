@@ -15,10 +15,11 @@ export class RoleCollider extends cc.Component {
     }
 
     onCollisionEnter(other, self) {
+        if (self.tag === GlobalVar.CONST.ENUM.COLLIDER_ID.buffTrigger) {
+            if (other.tag !== GlobalVar.CONST.ENUM.COLLIDER_ID.buff) return;
+            this.eatBuff(other); return;
+        }
         switch (other.tag) {
-            case GlobalVar.CONST.ENUM.COLLIDER_ID.buff:
-                this.eatBuff(other);
-                break;
             case GlobalVar.CONST.ENUM.COLLIDER_ID.enemy:
                 this.strikeEnemy(other);
                 break;
