@@ -1,34 +1,29 @@
-declare namespace hago {
-    export function init(
-        roomID: string,
-        gameID: string,
-        kvHost: string,
-        kvSign: string
-    );
-    export function getGameID(): string;
-    export function getRoomID(): string;
-    export function onPKLoading(): void;
-    export function onPKFinishLoading(): void;
-    export function onPKLoadFail(): void;
-    export function onPKStart(): void;
-    export function onPKFinish(result: string): void;
-    export function onPKExceptionFinish(): void;
-    /**
-     * 通知 app 退出游戏，一般与 setGameExitCallback 配合使用，在 setGameExitCallback 的回调中调用 onGameExit
-     */
-    export function onGameExit(): void;
+declare namespace hg {
+    export interface Result {
+        timestamp: number,
+        nonstr: string,
+        sign: string,
+        gametype: string,
+        result: {
+            gameid: string,
+            roomid: string,
+            channelid: string,
+            resulttype: string,
+            users: string[],
+            winners: string[],
+        },
+    }
+    export function getMatchupUrl(): string;
+    export function gameLoadResult(): void;
+    export function pkStart(): void;
+    export function pkFinish(result: Result): void;
+    export function pkFinishError(): void;
 
-    //需要在 setGameReadyCallback 回调被通知后调用
-    export function getUserInfo(paras: {
-        userIDs: string;
-        success: Function;
-        failure: Function;
-    }): void;
+    export function listenPkExit(cb: () => void): void;
+    export function exitPkGame(): void;
+
     export function setEnterBackgroundCallback(cb: Function): void;
     export function setEnterForegroundCallback(cb: Function): void;
-    export function setGameExitCallback(cb: Function): void;
-    export function setGameReadyCallback(cb: Function): void;
-    export function setGameReadyCallback(cb: Function): void;
     export function getDeviceInfo(params: {
         success: (deviceInfo: {
             safeAreaInser: {

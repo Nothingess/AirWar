@@ -112,6 +112,7 @@ export class PKSystem extends ISystem {
         this.gameOver();
         let selfScore: number = (this.mSelfPlayer !== null) ? this.mSelfPlayer.getScore() : 0;
         let oppScore: number = (this.mOppPlayer !== null) ? this.mOppPlayer.getScore() : 0;
+        console.error(`oppScore : ${oppScore}`);
         (this.mFacade as MainFacade).getUISystem().openPanel(CloseAnAccountPanel, 'CloseAnAccountPanel',
             [2, selfScore, oppScore]);
     }

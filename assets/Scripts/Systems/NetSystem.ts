@@ -90,6 +90,7 @@ export class NetSystem extends ISystem {
         }
     }
     public result(data: any): void {
+        //console.log('result', data);
         (this.mFacade as MainFacade).getUISystem().openPanel(CloseAnAccountPanel, 'CloseAnAccountPanel',
             [data.result, data.yourScore, data.opponentScore]);
 
@@ -204,7 +205,7 @@ class IPlatform {
 class HagoLC extends IPlatform {
 
     private config = {
-        GAME_TIME: 90
+        GAME_TIME: 120
     }
 
     constructor(netSys: NetSystem) {
@@ -258,7 +259,7 @@ class HagoLC extends IPlatform {
     }): void {
         console.error(`onCreate : ${JSON.stringify(data)}`);
         GlobalVar.NetConfig.isAI = data.opponent.isAI;
-        if (!GlobalVar.NetConfig.selfAvatar && !!data.you.avatar) {
+/*         if (!GlobalVar.NetConfig.selfAvatar && !!data.you.avatar) {
             console.log('load play avatar');
             let loadPlayAvatar = GlobalVar.GetHandler((tex2d) => {
                 GlobalVar.NetConfig.selfAvatar = tex2d;
@@ -279,7 +280,7 @@ class HagoLC extends IPlatform {
                 loadOppAvatar
             )
             //GlobalVar.NetConfig.oppAvatar = data.opponent.avatar;
-        }
+        } */
         GlobalVar.NetConfig.isConnect = true;
         GlobalVar.SetSeed(data.seed);
         GlobalVar.EventMgr.dispatchEvent(GlobalVar.CONST.EVENT.connectSuc);
@@ -301,19 +302,19 @@ class HagoLC extends IPlatform {
         this.mNetSys.oppUseTool(data);
     }
     protected onResult(data: any): void {
-        console.log('onResult------------------------')
+        console.error('onResult------------------------')
         this.mNetSys.result(data);
     }
     protected onReconnectBegin(): void {
-        console.log('net onReconnectBegin------------------------')
+        console.error('net onReconnectBegin------------------------')
         this.mNetSys.reconnectBegin();
     }
     protected onReconnectFinish(): void {
-        console.log('net onReconnectFinish------------------------')
+        console.error('net onReconnectFinish------------------------')
         this.mNetSys.reconnectFinish();
     }
     protected onClose(): void {
-        console.log('net onClose------------------------')
+        console.error('net onClose------------------------')
         this.mNetSys.close();
     }
 }

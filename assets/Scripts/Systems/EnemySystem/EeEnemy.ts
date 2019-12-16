@@ -112,15 +112,15 @@ export class EeEnemy extends IEnemy {
     protected beAttack(val: number): void {
         super.beAttack(val);
         this.bar.fillRange = this.mHp / this.mMaxHp;
-/*         if (!this.mIsDrop) return;
-        this.mIsDrop = false;
-        setTimeout(() => {
-            this.mIsDrop = true;
-        }, 300);
-        this.award(); */
+        /*         if (!this.mIsDrop) return;
+                this.mIsDrop = false;
+                setTimeout(() => {
+                    this.mIsDrop = true;
+                }, 300);
+                this.award(); */
         this.playHit();
     }
-    public die():void{
+    public die(): void {
         if (this.mIsDie) return;
         this.mIsDie = true;
 
@@ -128,11 +128,11 @@ export class EeEnemy extends IEnemy {
         this.award();
         this.recycle();
         GlobalVar.AudioMgr.playSound(GlobalVar.CONST.ENUM.AUDIO_TYPE.monsterDie);
-    } 
-/*     protected award(): void {
-        this.dieAc();
-        super.award();
-    } */
+    }
+    /*     protected award(): void {
+            this.dieAc();
+            super.award();
+        } */
     public noAwardDie(): void {
         if (this.mIsDie) return;
         this.mIsDie = true;
@@ -142,6 +142,7 @@ export class EeEnemy extends IEnemy {
         this.recycle();
     }
     public recycle(): void {
+        if (this.mEnemySys) { this.mEnemySys.endEeEnemy() }
         this.mIsStand = false;
         GlobalVar.PoolMgr.put(EeEnemy.type, this.node);
     }

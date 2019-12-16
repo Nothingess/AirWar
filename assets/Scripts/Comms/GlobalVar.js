@@ -531,40 +531,30 @@ if (typeof (hg) !== 'undefined') {
     GlobalVar.EventMgr.addEventListener(GlobalVar.CONST.EVENT.gameOver, () => {
         console.error('开始退出游戏---------------------------')
         saveData();
-        setTimeout(() => {
-            /* hg.exitMiniProgram({
-                exitConfirm: true,
-                success: () => {
-                    console.error('退出游戏成功');
-                },
-                fail: () => {
-                    console.error('退出游戏失败');
-                },
-                complete: () => { }
-            }) */
+/*         setTimeout(() => {
             hg.pkFinishError({ message: "connect to server error", code: "100" });
-        }, 5000);
+        }, 5000); */
     }, 'LCHago')
 
     //获取匹配信息
-    let matchupInfo = hg.getMatchupInfo();
-    GlobalVar.NetConfig.selfAvatar = true;
-    let loadPlayAvatar = GlobalVar.GetHandler((tex2d) => {
+    //let matchupInfo = hg.getMatchupInfo();
+    //GlobalVar.NetConfig.selfAvatar = true;
+/*     let loadPlayAvatar = GlobalVar.GetHandler((tex2d) => {
         GlobalVar.NetConfig.selfAvatar = tex2d;
-    }, this)
-    GlobalVar.Loader.loadExternalAsset(
+    }, this) */
+/*     GlobalVar.Loader.loadExternalAsset(
         matchupInfo.player.avatarurl,
         loadPlayAvatar
-    )
+    ) */
 
-    console.error(`获取匹配信息：\n${JSON.stringify(matchupInfo)}`);
-    let opt = matchupInfo.player.opt;
-    opt = opt.replace("\\", "");
-    let optObj = JSON.parse(opt);
+    //console.error(`获取匹配信息：\n${JSON.stringify(matchupInfo)}`);
+    //let opt = matchupInfo.player.opt;
+    //opt = opt.replace("\\", "");
+    //let optObj = JSON.parse(opt);
 
-    console.error(opt);
+    //console.error(opt);
 
-    hg.getUserInfoByUids({
+/*     hg.getUserInfoByUids({
         uids: [optObj.ai_info.uid],
         success: function (res) {
             console.error("getUserInfoByUids result:" + JSON.stringify(res))
@@ -581,7 +571,7 @@ if (typeof (hg) !== 'undefined') {
         , fail: function (res) {
             console.error("hg.getUserInfoByUids fail " + res.errCode)
         }
-    })
+    }) */
 } else {
     GlobalVar.NetConfig.loginTimes = 7;
 }

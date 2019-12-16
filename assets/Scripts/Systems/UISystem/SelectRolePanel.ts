@@ -217,7 +217,6 @@ export class SelectRolePanel extends cc.Component {
         GlobalVar.EventMgr.removeEventListenerByTag(GlobalVar.CONST.EVENT.readyCountDown, 'SelectRolePanel');
     }
     private onConnect(): void {
-        //this.showTipLa.string = 'Select Role';
         this.loadShowTip(GlobalVar.CONST.Language_PATH.selectRole);
         this.startTimer();
     }

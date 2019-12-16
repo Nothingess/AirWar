@@ -38,8 +38,8 @@ export class EnemySys extends ISystem {
 
     private mCurBossIndex: number = 0;                  //当前boss索引
 
-    /**当前是否持有对方给我放的加速道具 */
-    private mCurIshaveAddTool: boolean = false;
+    private mCurIshaveAddTool: boolean = false;         //当前是否持有对方给我放的加速道具
+    private mIsHaveEeEnemy: boolean = false;            //是否存在精英怪
     /**
      * #在默认状态下每10波小怪就进入boss关卡
      * #当进入加速状态时不算小怪波次
@@ -188,6 +188,7 @@ export class EnemySys extends ISystem {
     }
     /**生产精英怪 */
     public createEeEnemy(): void {
+        if (this.mIsHaveEeEnemy) return;
         let node: cc.Node = GlobalVar.PoolMgr.get(EeEnemy.type);
         if (node) {
             let sc: EeEnemy = node.getComponent(EeEnemy);
@@ -199,6 +200,10 @@ export class EnemySys extends ISystem {
             node.setPosition(cc.v2(Math.random() * GlobalVar.SysInfo.view.width,
                 GlobalVar.SysInfo.view.height))
         }
+    }
+    /**精英怪已回收 */
+    public endEeEnemy(): void {
+        this.mIsHaveEeEnemy = false;
     }
     /**
      * 创建boss
