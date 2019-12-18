@@ -184,7 +184,7 @@ class NodePool extends IPool {
     }
     protected create(): cc.Node {
         if (this.mPrefab == null) {
-            console.log(`创建节点失败！请检查 this.mPrefab 是否为空`);
+            GlobalVar.log(`创建节点失败！请检查 this.mPrefab 是否为空`);
             return null;
         }
         let node: cc.Node = cc.instantiate(this.mPrefab);
@@ -192,7 +192,7 @@ class NodePool extends IPool {
         node.setParent(this.mParent);
         node.name = `${this.mPrefab.name}${this.mTotal}`;
         this.mTotal++;
-        console.log(node.name);
+        GlobalVar.log(node.name);
         return node;
     }
 

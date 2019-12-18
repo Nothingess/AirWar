@@ -29,7 +29,7 @@ export class PanelMgr {
         this.mRoot = root;
         this.mMaskLyer = cc.find("funcLayer/mask", this.mRoot);
         if (this.mRoot == null) {
-            console.error("UISystem.initLayer fail, uiLayer is null!");
+            GlobalVar.error("UISystem.initLayer fail, uiLayer is null!");
         }
         this.mLayerDict = new Map<string, cc.Node>();
         for (let pl in GlobalVar.CONST.ENUM.PANEL_LAYER) {

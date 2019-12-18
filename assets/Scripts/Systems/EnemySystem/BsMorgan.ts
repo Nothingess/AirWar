@@ -115,7 +115,7 @@ class AtkCtrl {
 
     private getGroup(): BtGroup {
         let bt: BtGroup = this.mBtGroupsPool.shift();
-        if (!bt) { bt = new BtGroup(this); console.log('新group') }
+        if (!bt) { bt = new BtGroup(this); GlobalVar.log('新group') }
         return bt;
     }
     private putGroup(bt: BtGroup): void {

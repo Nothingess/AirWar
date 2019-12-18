@@ -40,6 +40,10 @@ class SelectBox {
 
 @ccclass
 export class SelectRolePanel extends cc.Component {
+
+    @property({ type: cc.Node, tooltip: "测试签到按钮" })
+    testSignIn: cc.Node = null;
+
     @property({ type: cc.Label, tooltip: '倒计时' })
     timerLa: cc.Label = null;
     @property({ type: cc.Sprite, tooltip: '提示' })
@@ -76,6 +80,16 @@ export class SelectRolePanel extends cc.Component {
         this.startAnimation();
         this.onSelect(0);
         this.onEvent();
+
+
+        this.updateSignIn();
+    }
+    //测试
+    private updateSignIn(): void {
+        //测试
+        this.testSignIn.children[0].children[0].getComponent(cc.Label).string = `signIn:${
+            GlobalVar.NetConfig.loginTimes
+            }`
     }
     /**初始话被锁角色 */
     private initLockItem(): void {
@@ -109,7 +123,7 @@ export class SelectRolePanel extends cc.Component {
         this.mbtnEnter.y = -GlobalVar.SysInfo.view.height * .25;
 
         let ac = cc.spawn(
-            cc.moveBy(.5, cc.v2(0, GlobalVar.SysInfo.view.height * .16)).easing(cc.easeBackOut()),
+            cc.moveBy(.5, cc.v2(0, GlobalVar.SysInfo.view.height * .20)).easing(cc.easeBackOut()),
             cc.fadeIn(.5)
         )
 
@@ -204,6 +218,17 @@ export class SelectRolePanel extends cc.Component {
 
         GlobalVar.EventMgr.addEventListener(GlobalVar.CONST.EVENT.connectSuc, this.onConnect.bind(this), 'SelectRolePanel');
         GlobalVar.EventMgr.addEventListener(GlobalVar.CONST.EVENT.readyCountDown, this.onStart.bind(this), 'SelectRolePanel');
+
+        cc.game.on(cc.game.EVENT_HIDE, this.onHide, this);
+
+        //测试
+        this.testSignIn.on('touchend', this.onTestSignIn, this);
+    }
+    //测试
+    private onTestSignIn(): void {
+        GlobalVar.NetConfig.loginTimes++;
+        GlobalVar.NetConfig.loginTimes = (GlobalVar.NetConfig.loginTimes > 7) ? 1 : GlobalVar.NetConfig.loginTimes;
+        this.updateSignIn();
     }
     protected offEvent(): void {
         this.select_l.boxSp.node.off('touchend', this.onTouchL, this);
@@ -215,6 +240,12 @@ export class SelectRolePanel extends cc.Component {
 
         GlobalVar.EventMgr.removeEventListenerByTag(GlobalVar.CONST.EVENT.connectSuc, 'SelectRolePanel');
         GlobalVar.EventMgr.removeEventListenerByTag(GlobalVar.CONST.EVENT.readyCountDown, 'SelectRolePanel');
+
+        cc.game.off(cc.game.EVENT_HIDE, this.onHide, this);
+    }
+    private onHide(): void {
+        GlobalVar.log("游戏进入后台");
+        this.onTouchBtnC();
     }
     private onConnect(): void {
         this.loadShowTip(GlobalVar.CONST.Language_PATH.selectRole);

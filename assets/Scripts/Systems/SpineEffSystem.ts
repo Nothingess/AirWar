@@ -161,7 +161,7 @@ class SpineExploed extends SpineEff {
 
     constructor(spineSys: SpineEffSystem) {
         super(spineSys);
-        console.log('new SpineExploed')
+        GlobalVar.log('new SpineExploed')
     }
     public init(spData: sp.SkeletonData, pos: cc.Vec2, type: spineType, defaultName: string = ''): cc.Node {
         this.mDefaultAcName = defaultName;
@@ -195,7 +195,7 @@ class SpineLaser extends SpineEff {
 
     constructor(spineSys: SpineEffSystem) {
         super(spineSys);
-        console.log('new SpineLaser')
+        GlobalVar.log('new SpineLaser')
     }
     public init(spData: sp.SkeletonData, pos: cc.Vec2, type: spineType): cc.Node {
 

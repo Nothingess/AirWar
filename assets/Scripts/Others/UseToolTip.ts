@@ -70,7 +70,7 @@ export class UseToolTip extends cc.Component {
         this.setAvatar(this.avatar_r, GlobalVar.NetConfig.oppAvatar);
     }
     private setAvatar(sp: cc.Sprite, tex2d: cc.Texture2D): void {
-        console.error(`头像精灵：${sp}, 路径：${tex2d}`);
+        GlobalVar.error(`头像精灵：${sp}, 路径：${tex2d}`);
 
         if (!sp || !tex2d) return;//其一为 null or undefined
         if (!!sp.spriteFrame) return;//已经加载过了

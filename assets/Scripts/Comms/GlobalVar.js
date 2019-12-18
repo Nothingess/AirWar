@@ -60,6 +60,8 @@ GlobalVar.SysInfo = {
 }
 
 //函数----------------------------
+GlobalVar.log = (message, ...optionalParams) => { console.log('s-cocosdebug// ', message, optionalParams) }
+GlobalVar.error = (message, ...optionalParams) => { console.error('s-cocoserror// ', message, optionalParams) }
 /** 用于绑定回调函数this指针*/
 GlobalVar.GetHandler = gen_handler;
 /** 将一个向量转化为一个角度  { 以cc.v2(1, 0)为正方向 }*/
@@ -70,7 +72,7 @@ GlobalVar.SetView = setView;
 GlobalVar.SeedRandom = seedRandom;
 GlobalVar.SetSeed = (val) => {
     seed = GlobalVar.NetConfig.randomSeed = val;
-    console.log(seed);
+    GlobalVar.log(`随机数${seed}`);
 }
 GlobalVar.GetEleformArrByPer = getEleformArrByPer;
 
@@ -172,13 +174,15 @@ GlobalVar.CONST = {
         gameOver: 27,
         /**网络断开，游戏结束 */
         netClose: 28,
+        /**暴力退出 */
+        forceClose: 29,
 
 
         /**移除道具 */
-        removeProp: 29,
+        removeProp: 30,
 
 
-        testUseTool: 30
+        testUseTool: 31
 
     },
     /**枚举类型 */
@@ -242,7 +246,7 @@ GlobalVar.CONST = {
             /**敌人boss（碰撞分组group属于enemy， 只是tag不一样，用来区分标识enemy和boss） */
             boss: 7,
             /**buff 触发器：吃buff（碰撞分组group属于role, 只是tag不一样，用来区别role和buffTrigger） */
-            buffTrigger:8
+            buffTrigger: 8
         },
         /**道具id分类 */
         BUFF_ID: {
@@ -294,7 +298,7 @@ GlobalVar.CONST = {
             lose: 13,
             ready: 14,
             go: 15,
-            boss:16
+            boss: 16
         }
     },
     /**图片资源路径 and ui根目录*/
@@ -470,7 +474,7 @@ GlobalVar.CONST = {
 if (typeof (hg) !== 'undefined') {
     hg.gameLoadResult && hg.gameLoadResult({ code: 0 });
     let date = new Date();
-    console.error(`当前系统时间：${date.getFullYear()}${date.getMonth()}${date.getDate()}`)
+    GlobalVar.error(`当前系统时间：${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`)
     //console.log(date.getFullYear())
     //console.log(date.getMonth())
     //console.log(date.getDate())
@@ -484,11 +488,11 @@ if (typeof (hg) !== 'undefined') {
                         let value = JSON.parse(res[i].value);
                         let loginTimes = value.loginTimes;
 
-                        console.error(`拉取到data数据{loginTimes:${value.loginTimes},date:${value.date}}`);
+                        GlobalVar.error(`拉取到data数据{loginTimes:${value.loginTimes},date:${value.date}}`);
 
                         if (value.date !== `${date.getFullYear()}${date.getMonth()}${date.getDate()}`) {//今天没有登陆
                             loginTimes++;
-                            console.error('今天没有登陆过，登陆天数加一');
+                            GlobalVar.error('今天没有登陆过，登陆天数加一');
                         }
                         GlobalVar.NetConfig.loginTimes = loginTimes;
                     } else {
@@ -497,16 +501,16 @@ if (typeof (hg) !== 'undefined') {
                     continue;
                 }
             }
-            console.error(`拉取数据：${JSON.stringify(res)}`);//[{"key":hello,"value":"world"]
+            GlobalVar.error(`拉取数据：${JSON.stringify(res)}`);//[{"key":hello,"value":"world"]
         },
         fail: function () {
-            console.log('fail');
+            GlobalVar.log('fail');
         }
     })
     let saveData = () => {
-        console.error('开始保存数据--------------------------')
+        GlobalVar.error('开始保存数据--------------------------')
         let val = { loginTimes: GlobalVar.NetConfig.loginTimes, date: `${date.getFullYear()}${date.getMonth()}${date.getDate()}` }
-        console.error(`数据：${JSON.stringify(val)}`)
+        GlobalVar.error(`数据：${JSON.stringify(val)}`)
 
         hg.setUserCloudStorage({
             KVDataList: [{
@@ -514,38 +518,42 @@ if (typeof (hg) !== 'undefined') {
                 value: JSON.stringify(val)  //只支持字符串
             }],
             success: function (res) {
-                console.error("保存数据 Success: " + JSON.stringify(res));
+                GlobalVar.error("保存数据 Success: " + JSON.stringify(res));
             },
             fail: function () {
-                console.error("保存数据 fail");
+                GlobalVar.error("保存数据 fail");
             }
         })
 
     }
     document.addEventListener("visibilitychange", function (event) {
-        console.error(`true表示隐藏，false表示显示：${event.hidden}`); // true标识隐藏，false表示显示
+        GlobalVar.error(`true表示隐藏，false表示显示：${event.hidden}`); // true标识隐藏，false表示显示
         if (event.hidden) { saveData(); }
-
     });
 
     GlobalVar.EventMgr.addEventListener(GlobalVar.CONST.EVENT.gameOver, () => {
-        console.error('开始退出游戏---------------------------')
+        GlobalVar.error('开始退出游戏---------------------------')
         saveData();
-/*         setTimeout(() => {
+        /*         setTimeout(() => {
+                    hg.pkFinishError({ message: "connect to server error", code: "100" });
+                }, 5000); */
+    }, 'LCHago')
+    GlobalVar.EventMgr.addEventListener(GlobalVar.CONST.EVENT.forceClose, () => {
+        setTimeout(() => {
             hg.pkFinishError({ message: "connect to server error", code: "100" });
-        }, 5000); */
+        }, 2500);
     }, 'LCHago')
 
     //获取匹配信息
     //let matchupInfo = hg.getMatchupInfo();
     //GlobalVar.NetConfig.selfAvatar = true;
-/*     let loadPlayAvatar = GlobalVar.GetHandler((tex2d) => {
-        GlobalVar.NetConfig.selfAvatar = tex2d;
-    }, this) */
-/*     GlobalVar.Loader.loadExternalAsset(
-        matchupInfo.player.avatarurl,
-        loadPlayAvatar
-    ) */
+    /*     let loadPlayAvatar = GlobalVar.GetHandler((tex2d) => {
+            GlobalVar.NetConfig.selfAvatar = tex2d;
+        }, this) */
+    /*     GlobalVar.Loader.loadExternalAsset(
+            matchupInfo.player.avatarurl,
+            loadPlayAvatar
+        ) */
 
     //console.error(`获取匹配信息：\n${JSON.stringify(matchupInfo)}`);
     //let opt = matchupInfo.player.opt;
@@ -554,24 +562,24 @@ if (typeof (hg) !== 'undefined') {
 
     //console.error(opt);
 
-/*     hg.getUserInfoByUids({
-        uids: [optObj.ai_info.uid],
-        success: function (res) {
-            console.error("getUserInfoByUids result:" + JSON.stringify(res))
-            GlobalVar.NetConfig.oppAvatar = true;
-            let loadOppAvatar = GlobalVar.GetHandler((tex2d) => {
-                GlobalVar.NetConfig.oppAvatar = tex2d;
-            }, this)
-            GlobalVar.Loader.loadExternalAsset(
-                res[0].avatar,
-                loadOppAvatar
-            )
-            console.error(`对手头像路径：${GlobalVar.NetConfig.oppAvatar}`);
-        }
-        , fail: function (res) {
-            console.error("hg.getUserInfoByUids fail " + res.errCode)
-        }
-    }) */
+    /*     hg.getUserInfoByUids({
+            uids: [optObj.ai_info.uid],
+            success: function (res) {
+                console.error("getUserInfoByUids result:" + JSON.stringify(res))
+                GlobalVar.NetConfig.oppAvatar = true;
+                let loadOppAvatar = GlobalVar.GetHandler((tex2d) => {
+                    GlobalVar.NetConfig.oppAvatar = tex2d;
+                }, this)
+                GlobalVar.Loader.loadExternalAsset(
+                    res[0].avatar,
+                    loadOppAvatar
+                )
+                console.error(`对手头像路径：${GlobalVar.NetConfig.oppAvatar}`);
+            }
+            , fail: function (res) {
+                console.error("hg.getUserInfoByUids fail " + res.errCode)
+            }
+        }) */
 } else {
     GlobalVar.NetConfig.loginTimes = 7;
 }

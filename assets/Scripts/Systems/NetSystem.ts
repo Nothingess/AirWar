@@ -71,11 +71,12 @@ export class NetSystem extends ISystem {
     }
     /**更新对手分数 */
     public updateOppScore(val: number): void {
-        (this.mFacade as MainFacade).getUISystem().updateScoreUI(1, val);
+        //(this.mFacade as MainFacade).getUISystem().updateScoreUI(1, val);
+        (this.mFacade as MainFacade).getPKSystem().updateOppScore(val);
     }
     /**对手对我使用道具 */
     public oppUseTool(id: number): void {
-        console.log(`对方给我使用道具：${id}`);
+        GlobalVar.log(`对方给我使用道具：${id}`);
         //id = 1;
         switch (id) {
             case 0://召唤精英怪
@@ -108,6 +109,7 @@ export class NetSystem extends ISystem {
     public close(): void {
         (this.mFacade as MainFacade).getUISystem().netShow(1);
         GlobalVar.EventMgr.dispatchEvent(GlobalVar.CONST.EVENT.netClose);
+        GlobalVar.EventMgr.dispatchEvent(GlobalVar.CONST.EVENT.forceClose);
         GlobalVar.NetConfig.isGameOver = true;
     }
 }
@@ -213,7 +215,7 @@ class HagoLC extends IPlatform {
     }
 
     public connect(): void {
-        LCHago.connect(1);
+        LCHago.connect();
     }
     public ready(): void {
         GlobalVar.NetConfig.isReady = true;
@@ -237,7 +239,7 @@ class HagoLC extends IPlatform {
         LCHago.score(val, true);
     }
     public finish(): void {
-        console.log('finish----------------------------------')
+        GlobalVar.log('finish----------------------------------')
         LCHago.finish();
     }
 
@@ -257,30 +259,30 @@ class HagoLC extends IPlatform {
         opponent: { isAI: boolean, avatar: any },
         seed: number,
     }): void {
-        console.error(`onCreate : ${JSON.stringify(data)}`);
+        GlobalVar.error(`onCreate : ${JSON.stringify(data)}`);
         GlobalVar.NetConfig.isAI = data.opponent.isAI;
-/*         if (!GlobalVar.NetConfig.selfAvatar && !!data.you.avatar) {
-            console.log('load play avatar');
-            let loadPlayAvatar = GlobalVar.GetHandler((tex2d) => {
-                GlobalVar.NetConfig.selfAvatar = tex2d;
-            }, this)
-            GlobalVar.Loader.loadExternalAsset(
-                data.you.avatar,
-                loadPlayAvatar
-            )
-            //GlobalVar.NetConfig.selfAvatar = data.you.avatar;
-        }
-        if (!GlobalVar.NetConfig.oppAvatar && !!data.opponent.avatar) {
-            console.log('load opp avatar');
-            let loadOppAvatar = GlobalVar.GetHandler((tex2d) => {
-                GlobalVar.NetConfig.oppAvatar = tex2d;
-            }, this)
-            GlobalVar.Loader.loadExternalAsset(
-                data.opponent.avatar,
-                loadOppAvatar
-            )
-            //GlobalVar.NetConfig.oppAvatar = data.opponent.avatar;
-        } */
+        /*         if (!GlobalVar.NetConfig.selfAvatar && !!data.you.avatar) {
+                    GlobalVar.log('load play avatar');
+                    let loadPlayAvatar = GlobalVar.GetHandler((tex2d) => {
+                        GlobalVar.NetConfig.selfAvatar = tex2d;
+                    }, this)
+                    GlobalVar.Loader.loadExternalAsset(
+                        data.you.avatar,
+                        loadPlayAvatar
+                    )
+                    //GlobalVar.NetConfig.selfAvatar = data.you.avatar;
+                }
+                if (!GlobalVar.NetConfig.oppAvatar && !!data.opponent.avatar) {
+                    GlobalVar.log('load opp avatar');
+                    let loadOppAvatar = GlobalVar.GetHandler((tex2d) => {
+                        GlobalVar.NetConfig.oppAvatar = tex2d;
+                    }, this)
+                    GlobalVar.Loader.loadExternalAsset(
+                        data.opponent.avatar,
+                        loadOppAvatar
+                    )
+                    //GlobalVar.NetConfig.oppAvatar = data.opponent.avatar;
+                } */
         GlobalVar.NetConfig.isConnect = true;
         GlobalVar.SetSeed(data.seed);
         GlobalVar.EventMgr.dispatchEvent(GlobalVar.CONST.EVENT.connectSuc);
@@ -302,19 +304,20 @@ class HagoLC extends IPlatform {
         this.mNetSys.oppUseTool(data);
     }
     protected onResult(data: any): void {
-        console.error('onResult------------------------')
+        GlobalVar.error('onResult------------------------')
+        GlobalVar.error(JSON.stringify(data));
         this.mNetSys.result(data);
     }
     protected onReconnectBegin(): void {
-        console.error('net onReconnectBegin------------------------')
+        GlobalVar.error('net onReconnectBegin------------------------')
         this.mNetSys.reconnectBegin();
     }
     protected onReconnectFinish(): void {
-        console.error('net onReconnectFinish------------------------')
+        GlobalVar.error('net onReconnectFinish------------------------')
         this.mNetSys.reconnectFinish();
     }
     protected onClose(): void {
-        console.error('net onClose------------------------')
+        GlobalVar.error('net onClose------------------------')
         this.mNetSys.close();
     }
 }

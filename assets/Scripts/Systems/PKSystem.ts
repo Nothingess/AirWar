@@ -33,7 +33,7 @@ export class PKSystem extends ISystem {
         }
 
         //this.mBossList = [1, 0, 2, 2]
-        console.log(`boss coming arr : ${this.mBossList}`);
+        GlobalVar.log(`boss coming arr : ${this.mBossList}`);
 
         this.mSelfPlayer = new MySelf(this);
         if (GlobalVar.NetConfig.isAI) { this.mOppPlayer = new AI(this); }
@@ -73,6 +73,7 @@ export class PKSystem extends ISystem {
         (this.mFacade as MainFacade).getUISystem().updateScoreUI(id, scoreVal);
     }
     public updateOppScore(val: number): void {
+        if (!this.mOppPlayer) return;
         this.mOppPlayer.updateOppScore(val);
     }
     public updateCountDown(timer: number): void {
@@ -88,7 +89,7 @@ export class PKSystem extends ISystem {
     private checkCountDown(): boolean {
         if (this.mCountDown <= 0) {
             this.timerOutOver();
-            console.log('checkCountDown end true--------------------------')
+            GlobalVar.log('checkCountDown end true--------------------------')
             return true;
         }
         return false;
@@ -112,7 +113,6 @@ export class PKSystem extends ISystem {
         this.gameOver();
         let selfScore: number = (this.mSelfPlayer !== null) ? this.mSelfPlayer.getScore() : 0;
         let oppScore: number = (this.mOppPlayer !== null) ? this.mOppPlayer.getScore() : 0;
-        console.error(`oppScore : ${oppScore}`);
         (this.mFacade as MainFacade).getUISystem().openPanel(CloseAnAccountPanel, 'CloseAnAccountPanel',
             [2, selfScore, oppScore]);
     }
@@ -213,16 +213,13 @@ class AI extends Oppoent {
     }
     public update(dt): void {
         if (this.mIsEnd) return;
-
         this.mAIStateMgr.update(dt);
     }
-    public updateOppScore(val: number): void {
+    /**上传ai分数 */
+    public uploadOppScore(val: number): void {
         if (this.mIsEnd) return;
         this.checkAIScore(val);
-        if (this.mPkSys) {
-            //this.mPkSys.updateScoreUI(this.mId, this.mScoreVal);
-            (this.mPkSys.getFacade() as MainFacade).getNetSystem().uploadOppScore(this.mScoreVal);
-        }
+        (this.mPkSys.getFacade() as MainFacade).getNetSystem().uploadOppScore(this.mScoreVal);
     }
     /**检测ai分数，合理化 */
     private checkAIScore(val: number): void {
@@ -289,7 +286,7 @@ class AIStateMgr {
     }
 
     public getScore(val: number): void {
-        this.mAI.updateOppScore(val);
+        this.mAI.uploadOppScore(val);
     }
 }
 
@@ -424,7 +421,7 @@ class BossState extends AIState {
             } else {
                 this.mAIStateMgr.setState(new AddSpeedStaet(this.mAIStateMgr));
                 this.mAIStateMgr.nextBoss();
-                console.log('对方玩家进入加速状态');
+                GlobalVar.log('对方玩家进入加速状态');
                 return;
             }
         }

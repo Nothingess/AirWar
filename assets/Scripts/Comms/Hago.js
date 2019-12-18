@@ -1,5 +1,5 @@
 // LC事件
-function LCEvent() {
+/* function LCEvent() {
     const ths = this;
 
     LCHago.onCreate = (data) => {
@@ -83,4 +83,4 @@ function LCEvent() {
     } else {
         LCHago.connect()
     }
-}
+} */

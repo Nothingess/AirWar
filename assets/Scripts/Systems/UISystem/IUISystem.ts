@@ -139,12 +139,12 @@ export class MainUISystem extends IUISystem {
             tipLayer,
             GlobalVar.CONST.SOCRE_TIP_PATH
         );
-/*         GlobalVar.PoolMgr.createNodePool(
-            UseToolTip.type,
-            topLayer,
-            GlobalVar.CONST.USE_TOOL_TIP_PATH,
-            2
-        ); */
+        /*         GlobalVar.PoolMgr.createNodePool(
+                    UseToolTip.type,
+                    topLayer,
+                    GlobalVar.CONST.USE_TOOL_TIP_PATH,
+                    2
+                ); */
         GlobalVar.PoolMgr.createNodePool(
             UseToolAction.type,
             topLayer,
@@ -341,7 +341,7 @@ export class MainUISystem extends IUISystem {
     /**对方使用道具的提示 */
     public playUseToolTip(id: number): void {
         //if (this.mUseToolTipMgr) {
-            //this.mUseToolTipMgr.playTip(id);
+        //this.mUseToolTipMgr.playTip(id);
         //}
     }
     /**我方使用道具的提示 */
@@ -402,6 +402,7 @@ export class MainUISystem extends IUISystem {
     }
     public netHide(): void {
         if (this.mNetTip) {
+            this.mNetTip.stopAllActions();
             this.mNetTip.opacity = 0;
         }
     }
@@ -536,7 +537,7 @@ export class PropMgr {
     //operation
     public addItem(id: number): void {
         if (this.mItemList.get(id)) return;
-        console.log('get item--------------------')
+        GlobalVar.log('get item--------------------')
         let han = GlobalVar.GetHandler((sf: cc.SpriteFrame) => {
             let node: cc.Node = GlobalVar.PoolMgr.get(PropMgr.type);
             if (node) {
