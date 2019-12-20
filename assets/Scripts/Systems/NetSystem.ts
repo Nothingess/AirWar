@@ -9,11 +9,11 @@ export class NetSystem extends ISystem {
     public initSys(iFacade: ISceneFacade): void {
         super.initSys(iFacade);
 
-        if (typeof LCHago !== 'undefined') {
-            this.mPlatform = new HagoLC(this);
-        } else {
-            this.mPlatform = new IPlatform(this);
-        }
+        //if (typeof (hg) !== 'undefined') {
+        this.mPlatform = new HagoLC(this);
+        //} else {
+        //    this.mPlatform = new IPlatform(this);
+        //}
 
         this.onEvents();
     }
@@ -109,7 +109,7 @@ export class NetSystem extends ISystem {
     public close(): void {
         (this.mFacade as MainFacade).getUISystem().netShow(1);
         GlobalVar.EventMgr.dispatchEvent(GlobalVar.CONST.EVENT.netClose);
-        GlobalVar.EventMgr.dispatchEvent(GlobalVar.CONST.EVENT.forceClose);
+        //GlobalVar.EventMgr.dispatchEvent(GlobalVar.CONST.EVENT.forceClose);
         GlobalVar.NetConfig.isGameOver = true;
     }
 }
@@ -174,7 +174,7 @@ class IPlatform {
         GlobalVar.EventMgr.dispatchEvent(GlobalVar.CONST.EVENT.readyCountDown);
         setTimeout(() => {
             GlobalVar.EventMgr.dispatchEvent(GlobalVar.CONST.EVENT.start);
-        }, 3000);
+        }, 2000);
     }
     /**
      * 倒计时
@@ -215,7 +215,7 @@ class HagoLC extends IPlatform {
     }
 
     public connect(): void {
-        LCHago.connect();
+        //LCHago.connect();
     }
     public ready(): void {
         GlobalVar.NetConfig.isReady = true;
@@ -244,7 +244,7 @@ class HagoLC extends IPlatform {
     }
 
     protected onEvents(): void {
-        LCHago.onCreate = this.onCreate.bind(this);
+        //LCHago.onCreate = this.onCreate.bind(this);
         LCHago.onStart = this.onStart.bind(this);
         LCHago.onCountDown = this.onCountDown.bind(this);
         LCHago.onOpponentScore = this.onOpponentScore.bind(this);

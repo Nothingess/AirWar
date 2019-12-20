@@ -349,7 +349,7 @@ var HagoDelegate = (function () {
     HagoDelegate.prototype.onPKExceptionFinish = function () {
         if (isHago) {
             console.log("hago.onPKExceptionFinish");
-            hg.pkFinishError();
+            hg.pkFinishError({ message: "connect to server error", code: "100" });
         }
     };
     HagoDelegate.prototype.exit = function (cb) {
@@ -1177,3 +1177,4 @@ exports.Tween = {
 
 },{}]},{},[5])(5)
 });
+

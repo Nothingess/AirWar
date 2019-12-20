@@ -84,3 +84,23 @@
         LCHago.connect()
     }
 } */
+
+
+/* //连接服务端
+if (typeof (hg) !== 'undefined') {
+    LCHago.connect();
+    LCHago.onCreate = () => {
+        GlobalVar.error(`onCreate : ${JSON.stringify(data)}`);
+        GlobalVar.NetConfig.isAI = data.opponent.isAI;
+        GlobalVar.NetConfig.isConnect = true;
+        GlobalVar.SetSeed(data.seed);
+    }
+}else{
+    LCHago.connect(1);
+    LCHago.onCreate = () => {
+        GlobalVar.error(`onCreate : ${JSON.stringify(data)}`);
+        GlobalVar.NetConfig.isAI = data.opponent.isAI;
+        GlobalVar.NetConfig.isConnect = true;
+        GlobalVar.SetSeed(data.seed);
+    }
+} */

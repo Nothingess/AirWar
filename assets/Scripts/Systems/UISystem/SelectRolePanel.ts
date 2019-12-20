@@ -82,6 +82,14 @@ export class SelectRolePanel extends cc.Component {
         this.onEvent();
 
 
+        //
+        let timer = setInterval(() => {
+            if (this.onConnect()) {
+                clearInterval(timer);
+            }
+        }, 1000)
+
+
         this.updateSignIn();
     }
     //测试
@@ -216,7 +224,7 @@ export class SelectRolePanel extends cc.Component {
 
         this.mbtnEnter.on('touchend', this.onTouchBtnC, this);
 
-        GlobalVar.EventMgr.addEventListener(GlobalVar.CONST.EVENT.connectSuc, this.onConnect.bind(this), 'SelectRolePanel');
+        //GlobalVar.EventMgr.addEventListener(GlobalVar.CONST.EVENT.connectSuc, this.onConnect.bind(this), 'SelectRolePanel');
         GlobalVar.EventMgr.addEventListener(GlobalVar.CONST.EVENT.readyCountDown, this.onStart.bind(this), 'SelectRolePanel');
 
         cc.game.on(cc.game.EVENT_HIDE, this.onHide, this);
@@ -247,9 +255,11 @@ export class SelectRolePanel extends cc.Component {
         GlobalVar.log("游戏进入后台");
         this.onTouchBtnC();
     }
-    private onConnect(): void {
+    private onConnect(): boolean {
+        if (!GlobalVar.NetConfig.isConnect) return false;
         this.loadShowTip(GlobalVar.CONST.Language_PATH.selectRole);
         this.startTimer();
+        return true;
     }
     private onStart(): void {
 
@@ -297,14 +307,14 @@ export class SelectRolePanel extends cc.Component {
                 }, 1000) */
     }
     private startTimer(): void {
-        let timer: number = 10;
+        let timer: number = 5;
         this.schedule(() => {
             this.timerLa.string = `${timer}`;
             timer--;
             if (timer < 0) {
                 this.onTouchBtnC();
             }
-        }, 1, 10)
+        }, 1, 5)
     }
     //播放准备倒计时动画
     private playReadyCountDown(val: number): void {

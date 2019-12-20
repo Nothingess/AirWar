@@ -3,7 +3,6 @@ import { EventMgr } from "./EventMgr";
 import { AudioMgr } from "./AudioMgr";
 import { PoolMgr } from "./PoolMgr";
 
-
 /**
  * 将一个向量转化为一个角度  { 以cc.v2(1, 0)为正方向 }
  * @param {cc.Vec2} dirVec 方向向量
@@ -60,8 +59,8 @@ GlobalVar.SysInfo = {
 }
 
 //函数----------------------------
-GlobalVar.log = (message, ...optionalParams) => { console.log('s-cocosdebug// ', message, optionalParams) }
-GlobalVar.error = (message, ...optionalParams) => { console.error('s-cocoserror// ', message, optionalParams) }
+GlobalVar.log = (message, ...optionalParams) => { console.log('[s-cocosdebug] - ', message) }
+GlobalVar.error = (message, ...optionalParams) => { console.error('[s-cocoserror] - ', message) }
 /** 用于绑定回调函数this指针*/
 GlobalVar.GetHandler = gen_handler;
 /** 将一个向量转化为一个角度  { 以cc.v2(1, 0)为正方向 }*/
@@ -530,7 +529,6 @@ if (typeof (hg) !== 'undefined') {
         GlobalVar.error(`true表示隐藏，false表示显示：${event.hidden}`); // true标识隐藏，false表示显示
         if (event.hidden) { saveData(); }
     });
-
     GlobalVar.EventMgr.addEventListener(GlobalVar.CONST.EVENT.gameOver, () => {
         GlobalVar.error('开始退出游戏---------------------------')
         saveData();
@@ -538,11 +536,11 @@ if (typeof (hg) !== 'undefined') {
                     hg.pkFinishError({ message: "connect to server error", code: "100" });
                 }, 5000); */
     }, 'LCHago')
-    GlobalVar.EventMgr.addEventListener(GlobalVar.CONST.EVENT.forceClose, () => {
-        setTimeout(() => {
-            hg.pkFinishError({ message: "connect to server error", code: "100" });
-        }, 2500);
-    }, 'LCHago')
+    /*     GlobalVar.EventMgr.addEventListener(GlobalVar.CONST.EVENT.forceClose, () => {
+            setTimeout(() => {
+                hg.pkFinishError({ message: "connect to server error", code: "100" });
+            }, 3000);
+        }, 'LCHago') */
 
     //获取匹配信息
     //let matchupInfo = hg.getMatchupInfo();
@@ -580,8 +578,9 @@ if (typeof (hg) !== 'undefined') {
                 console.error("hg.getUserInfoByUids fail " + res.errCode)
             }
         }) */
+
+
 } else {
     GlobalVar.NetConfig.loginTimes = 7;
 }
-
 //#endregion
