@@ -36,6 +36,8 @@ if (typeof (hg) !== 'undefined') {
         GlobalVar.NetConfig.isAI = data.opponent.isAI;
         GlobalVar.NetConfig.isConnect = true;
         GlobalVar.SetSeed(data.seed);
+        GlobalVar.NetConfig.isReady = true;
+        LCHago.ready();
     }
 } else {
     LCHago.connect(1);
@@ -44,5 +46,7 @@ if (typeof (hg) !== 'undefined') {
         GlobalVar.NetConfig.isAI = data.opponent.isAI;
         GlobalVar.NetConfig.isConnect = true;
         GlobalVar.SetSeed(data.seed);
+        GlobalVar.NetConfig.isReady = true;
+        LCHago.ready();
     }
 }

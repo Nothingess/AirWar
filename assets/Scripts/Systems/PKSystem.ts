@@ -97,7 +97,10 @@ export class PKSystem extends ISystem {
     /**游戏结束 */
     public gameOver(): void {
         if (this.mGameOver) return;
-        if (this.mSelfPlayer) { this.mSelfPlayer.setEnd() }
+        if (this.mSelfPlayer) {
+            this.mSelfPlayer.addScore(0);
+            this.mSelfPlayer.setEnd();
+        }
         if (this.mOppPlayer) { this.mOppPlayer.setEnd() }
 
         this.mGameOver = true;
@@ -129,9 +132,6 @@ export class PKSystem extends ISystem {
         super.endSys();
         this.offEvents();
     }
-
-
-
 
 
     ///AI check score---------------------------------

@@ -137,10 +137,12 @@ export class MainScene extends ISceneState {
             `${GlobalVar.CONST.BUFF_SKINPATH_IMG}${8}`,
             `${GlobalVar.CONST.BUFF_SKINPATH_IMG}${9}`,
 
-            `${GlobalVar.CONST.Language_PATH.ready}${GlobalVar.NetConfig.language}`,
-            `${GlobalVar.CONST.Language_PATH.go}${GlobalVar.NetConfig.language}`,
-            `${GlobalVar.CONST.Language_PATH.selectRole}${GlobalVar.NetConfig.language}`,
+            `${GlobalVar.CONST.Language_PATH.ready}${'en'}`,
+            `${GlobalVar.CONST.Language_PATH.go}${'en'}`,
             `${GlobalVar.CONST.Language_PATH.waitForOpp}${GlobalVar.NetConfig.language}`,
+            `${GlobalVar.CONST.Language_PATH.bossComing}${GlobalVar.NetConfig.language}`,
+            `${GlobalVar.CONST.Language_PATH.reconnect}${GlobalVar.NetConfig.language}`,
+            `${GlobalVar.CONST.Language_PATH.offLine}${GlobalVar.NetConfig.language}`,
 
             //panel
             'prefabs/uiPanels/CloseAnAccountPanel',

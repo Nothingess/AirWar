@@ -385,7 +385,6 @@ export class MainUISystem extends IUISystem {
                 this.mNetTip.getChildByName('sp').getComponent(cc.Sprite).spriteFrame = sf;
             }
         }, this)
-
         GlobalVar.Loader.loadRes(path, han, cc.SpriteFrame);
 
         this.mNetTip.stopAllActions();

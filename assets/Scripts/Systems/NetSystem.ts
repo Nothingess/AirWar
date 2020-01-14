@@ -71,6 +71,7 @@ export class NetSystem extends ISystem {
     }
     /**更新对手分数 */
     public updateOppScore(val: number): void {
+        if (GlobalVar.NetConfig.isOffLine) return;
         //(this.mFacade as MainFacade).getUISystem().updateScoreUI(1, val);
         (this.mFacade as MainFacade).getPKSystem().updateOppScore(val);
     }
@@ -90,10 +91,10 @@ export class NetSystem extends ISystem {
                 break;
         }
     }
-    public result(data: any): void {
+    public result(res: number, yourScore: number, oppScore: number): void {
         //console.log('result', data);
         (this.mFacade as MainFacade).getUISystem().openPanel(CloseAnAccountPanel, 'CloseAnAccountPanel',
-            [data.result, data.yourScore, data.opponentScore]);
+            [res, (yourScore < 0 ? '-' : yourScore), (oppScore < 0 ? '-' : oppScore)]);
 
         (this.mFacade as MainFacade).getPKSystem().gameOver();
         GlobalVar.NetConfig.isGameOver = true;
@@ -171,6 +172,7 @@ class IPlatform {
     }
     /**监听游戏开始事件 */
     protected onStart(data?: any): void {
+
         GlobalVar.EventMgr.dispatchEvent(GlobalVar.CONST.EVENT.readyCountDown);
         setTimeout(() => {
             GlobalVar.EventMgr.dispatchEvent(GlobalVar.CONST.EVENT.start);
@@ -195,7 +197,7 @@ class IPlatform {
      * 游戏结束
      * @param data v:1赢了,2输了,3平局
      */
-    protected onResult(data: number): void { }
+    protected onResult(res: number, yourScore: number, oppScore: number): void { }
     /**开始重连 */
     protected onReconnectBegin(): void { }
     /**重连成功 */
@@ -289,12 +291,19 @@ class HagoLC extends IPlatform {
     }
 
     protected onStart(data: any): void {
-        GlobalVar.EventMgr.dispatchEvent(GlobalVar.CONST.EVENT.readyCountDown);
-        setTimeout(() => {
-            GlobalVar.EventMgr.dispatchEvent(GlobalVar.CONST.EVENT.start);
-        }, 2000);
+        console.log('onStart====================');
     }
     protected onCountDown(data: any): void {
+        if (data > 122) return;
+        if (GlobalVar.NetConfig.isHide) return;
+        if (!GlobalVar.NetConfig.isStart) {
+            GlobalVar.NetConfig.isStart = true;
+            GlobalVar.EventMgr.dispatchEvent(GlobalVar.CONST.EVENT.readyCountDown);
+            setTimeout(() => {
+                GlobalVar.EventMgr.dispatchEvent(GlobalVar.CONST.EVENT.start);
+            }, 2000);
+            return;
+        }
         this.mNetSys.updateCountDown(data);
     }
     protected onOpponentScore(data: any): void {
@@ -303,22 +312,24 @@ class HagoLC extends IPlatform {
     protected onOpponentTool(data: any): void {
         this.mNetSys.oppUseTool(data);
     }
-    protected onResult(data: any): void {
-        GlobalVar.error('onResult------------------------')
-        GlobalVar.error(JSON.stringify(data));
-        this.mNetSys.result(data);
+    protected onResult(res: number, yourScore: number, oppScore: number): void {
+        this.mNetSys.result(res, yourScore, oppScore);
+        console.log('onResult==============================');
     }
     protected onReconnectBegin(): void {
-        GlobalVar.error('net onReconnectBegin------------------------')
         this.mNetSys.reconnectBegin();
+        console.log('onReconnectBegin======================');
+
     }
     protected onReconnectFinish(): void {
-        GlobalVar.error('net onReconnectFinish------------------------')
         this.mNetSys.reconnectFinish();
+        console.log('onReconnectFinish=====================');
+
     }
     protected onClose(): void {
-        GlobalVar.error('net onClose------------------------')
         this.mNetSys.close();
+        console.log('onClose======================');
+
     }
 }
 

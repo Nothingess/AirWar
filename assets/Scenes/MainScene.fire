@@ -5746,7 +5746,7 @@
         "__id__": 138
       }
     ],
-    "_active": true,
+    "_active": false,
     "_level": 5,
     "_components": [
       {
@@ -6673,7 +6673,7 @@
         "__id__": 164
       }
     ],
-    "_active": true,
+    "_active": false,
     "_level": 5,
     "_components": [
       {
@@ -7157,17 +7157,8 @@
       "__id__": 75
     },
     "_enabled": true,
-    "testSignIn": {
-      "__id__": 163
-    },
-    "timerLa": {
-      "__id__": 153
-    },
     "showTipLa": {
       "__id__": 161
-    },
-    "readyTiemr": {
-      "__id__": 158
     },
     "select_l": {
       "__id__": 177
@@ -7830,7 +7821,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 450,
+      "width": 500,
       "height": 50
     },
     "_anchorPoint": {

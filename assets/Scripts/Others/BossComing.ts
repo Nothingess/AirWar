@@ -54,6 +54,14 @@ export class BossComing extends cc.Component {
         this.rightBar.runAction(this.runActon(this.rightBar, -1, 2));
 
         GlobalVar.AudioMgr.playSound(GlobalVar.CONST.ENUM.AUDIO_TYPE.bossComing);
+
+        //load bosscoming
+        let han = GlobalVar.GetHandler((res: cc.SpriteFrame) => {
+            this.showTxt.getComponent(cc.Sprite).spriteFrame = res;
+        }, this);
+
+        let path = `${GlobalVar.CONST.Language_PATH.bossComing}${GlobalVar.NetConfig.language}`;
+        GlobalVar.Loader.loadRes(path, han, cc.SpriteFrame);
     }
 
     private runActon(node: cc.Node, dir: number, dur: number): cc.ActionInterval {

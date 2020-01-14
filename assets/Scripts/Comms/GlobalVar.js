@@ -92,6 +92,8 @@ GlobalVar.NetConfig = {
     isReady: false,
     /**开始游戏 */
     isStart: false,
+    /**进入后台 */
+    isHide: false,
     /**是否掉线 */
     isOffLine: false,
     /**当前系统语言 */
@@ -372,8 +374,6 @@ GlobalVar.CONST = {
     Language_PATH: {
         /**boss来袭 */
         bossComing: 'language/bossComing_',
-        /**loading */
-        loading: 'language/loading_',
         /**离线 */
         offLine: 'language/offLine_',
         /**准备结束 */
@@ -474,9 +474,6 @@ if (typeof (hg) !== 'undefined') {
     hg.gameLoadResult && hg.gameLoadResult({ code: 0 });
     let date = new Date();
     GlobalVar.error(`当前系统时间：${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`)
-    //console.log(date.getFullYear())
-    //console.log(date.getMonth())
-    //console.log(date.getDate())
     //获取数据
     hg.getUserCloudStorage({
         keyList: ["data"],
@@ -536,6 +533,23 @@ if (typeof (hg) !== 'undefined') {
                     hg.pkFinishError({ message: "connect to server error", code: "100" });
                 }, 5000); */
     }, 'LCHago')
+
+    const res = hg.getSystemInfoSync();
+    GlobalVar.log(`current use language : ${res.language}`);
+    switch (res.language) {
+        case 'hi':
+            GlobalVar.NetConfig.language = 'hi';
+            break;
+        case 'en-us':
+            GlobalVar.NetConfig.language = 'en';
+            break;
+        case 'id':
+            GlobalVar.NetConfig.language = 'id';
+            break;
+        default:
+            GlobalVar.NetConfig.language = 'en';
+            break;
+    }
     /*     GlobalVar.EventMgr.addEventListener(GlobalVar.CONST.EVENT.forceClose, () => {
             setTimeout(() => {
                 hg.pkFinishError({ message: "connect to server error", code: "100" });

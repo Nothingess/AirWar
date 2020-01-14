@@ -41,15 +41,11 @@ class SelectBox {
 @ccclass
 export class SelectRolePanel extends cc.Component {
 
-    @property({ type: cc.Node, tooltip: "测试签到按钮" })
-    testSignIn: cc.Node = null;
+    // @property({ type: cc.Node, tooltip: "测试签到按钮" })
+    // testSignIn: cc.Node = null;
 
-    @property({ type: cc.Label, tooltip: '倒计时' })
-    timerLa: cc.Label = null;
     @property({ type: cc.Sprite, tooltip: '提示' })
     showTipLa: cc.Sprite = null;
-    @property({ type: cc.Label, tooltip: "准备倒计时" })
-    readyTiemr: cc.Label = null;
 
     @property({ type: SelectBox, tooltip: '选择L' })
     select_l: SelectBox = new SelectBox();
@@ -63,7 +59,6 @@ export class SelectRolePanel extends cc.Component {
 
     private mCurIndex: number = -1;          //当前选择的角色索引（id）
     private mRole: sp.Skeleton = null;      //展示的角色spine组件
-    private mbtnEnter: cc.Node = null;      //确定按钮
 
     private mShowPos: cc.Vec2 = cc.v2(0, -50);    //显示的位置
 
@@ -73,7 +68,6 @@ export class SelectRolePanel extends cc.Component {
 
     protected initComponent(): void {
         this.mRole = cc.find('role', this.node).getComponent(sp.Skeleton);
-        this.mbtnEnter = cc.find('btn_enter', this.node);
 
         this.mCurSelectBox = this.select_l;
         this.initLockItem();
@@ -81,24 +75,16 @@ export class SelectRolePanel extends cc.Component {
         this.onSelect(0);
         this.onEvent();
 
-
-        //
-        let timer = setInterval(() => {
-            if (this.onConnect()) {
-                clearInterval(timer);
-            }
-        }, 1000)
-
-
-        this.updateSignIn();
+        this.loadShowTip(GlobalVar.CONST.Language_PATH.waitForOpp);
+        // this.updateSignIn();
     }
     //测试
-    private updateSignIn(): void {
-        //测试
-        this.testSignIn.children[0].children[0].getComponent(cc.Label).string = `signIn:${
-            GlobalVar.NetConfig.loginTimes
-            }`
-    }
+    // private updateSignIn(): void {
+    //     //测试
+    //     this.testSignIn.children[0].children[0].getComponent(cc.Label).string = `signIn:${
+    //         GlobalVar.NetConfig.loginTimes
+    //         }`
+    // }
     /**初始话被锁角色 */
     private initLockItem(): void {
         if (GlobalVar.NetConfig.loginTimes < 3) {//登陆天数少于3天
@@ -123,12 +109,12 @@ export class SelectRolePanel extends cc.Component {
         this.select_l.boxSp.node.opacity = 0;
         this.select_c.boxSp.node.opacity = 0;
         this.select_r.boxSp.node.opacity = 0;
-        this.mbtnEnter.opacity = 0;
+        //this.mbtnEnter.opacity = 0;
 
         this.select_l.boxSp.node.y = -GlobalVar.SysInfo.view.height * .5;
         this.select_c.boxSp.node.y = -GlobalVar.SysInfo.view.height * .5;
         this.select_r.boxSp.node.y = -GlobalVar.SysInfo.view.height * .5;
-        this.mbtnEnter.y = -GlobalVar.SysInfo.view.height * .25;
+        //this.mbtnEnter.y = -GlobalVar.SysInfo.view.height * .25;
 
         let ac = cc.spawn(
             cc.moveBy(.5, cc.v2(0, GlobalVar.SysInfo.view.height * .20)).easing(cc.easeBackOut()),
@@ -141,10 +127,6 @@ export class SelectRolePanel extends cc.Component {
         }, 100);
         setTimeout(() => {
             this.select_r.boxSp.node.runAction(ac.clone());
-            this.mbtnEnter.runAction(cc.spawn(
-                cc.moveTo(.3, cc.v2(0, -GlobalVar.SysInfo.view.height * .17)).easing(cc.easeBackOut()),
-                cc.fadeIn(.3)
-            ))
         }, 200);
     }
     private endAnimation(): void {
@@ -162,7 +144,7 @@ export class SelectRolePanel extends cc.Component {
         }, 200);
     }
     private onSelect(val: number): boolean {
-        if (GlobalVar.NetConfig.isReady) return;
+        //if (GlobalVar.NetConfig.isReady) return;
         if (val === this.mCurIndex) return false;
         this.mCurIndex = val;
         if (this.mCurIndex > 2) { this.mCurIndex = 0 }
@@ -221,51 +203,42 @@ export class SelectRolePanel extends cc.Component {
         this.select_c.boxSp.node.on('touchend', this.onTouchC, this);
         this.select_r.boxSp.node.on('touchend', this.onTouchR, this);
 
-
-        this.mbtnEnter.on('touchend', this.onTouchBtnC, this);
-
-        //GlobalVar.EventMgr.addEventListener(GlobalVar.CONST.EVENT.connectSuc, this.onConnect.bind(this), 'SelectRolePanel');
         GlobalVar.EventMgr.addEventListener(GlobalVar.CONST.EVENT.readyCountDown, this.onStart.bind(this), 'SelectRolePanel');
 
         cc.game.on(cc.game.EVENT_HIDE, this.onHide, this);
+        cc.game.on(cc.game.EVENT_SHOW, this.onShow, this);
 
-        //测试
-        this.testSignIn.on('touchend', this.onTestSignIn, this);
+        // //测试
+        // this.testSignIn.on('touchend', this.onTestSignIn, this);
     }
     //测试
-    private onTestSignIn(): void {
-        GlobalVar.NetConfig.loginTimes++;
-        GlobalVar.NetConfig.loginTimes = (GlobalVar.NetConfig.loginTimes > 7) ? 1 : GlobalVar.NetConfig.loginTimes;
-        this.updateSignIn();
-    }
+    // private onTestSignIn(): void {
+    //     GlobalVar.NetConfig.loginTimes++;
+    //     GlobalVar.NetConfig.loginTimes = (GlobalVar.NetConfig.loginTimes > 7) ? 1 : GlobalVar.NetConfig.loginTimes;
+    //     this.updateSignIn();
+    // }
     protected offEvent(): void {
         this.select_l.boxSp.node.off('touchend', this.onTouchL, this);
         this.select_c.boxSp.node.off('touchend', this.onTouchC, this);
         this.select_r.boxSp.node.off('touchend', this.onTouchR, this);
 
-
-        this.mbtnEnter.off('touchend', this.onTouchBtnC, this);
-
         GlobalVar.EventMgr.removeEventListenerByTag(GlobalVar.CONST.EVENT.connectSuc, 'SelectRolePanel');
         GlobalVar.EventMgr.removeEventListenerByTag(GlobalVar.CONST.EVENT.readyCountDown, 'SelectRolePanel');
 
         cc.game.off(cc.game.EVENT_HIDE, this.onHide, this);
+        cc.game.off(cc.game.EVENT_SHOW, this.onShow, this);
+    }
+    private onShow(): void {
+        GlobalVar.NetConfig.isHide = false;
+        GlobalVar.log("游戏进入前台");
     }
     private onHide(): void {
+        GlobalVar.NetConfig.isHide = true;
         GlobalVar.log("游戏进入后台");
-        this.onTouchBtnC();
-    }
-    private onConnect(): boolean {
-        if (!GlobalVar.NetConfig.isConnect) return false;
-        this.loadShowTip(GlobalVar.CONST.Language_PATH.selectRole);
-        this.startTimer();
-        return true;
     }
     private onStart(): void {
-
+        this.onStartGame();
         this.unscheduleAllCallbacks();
-        this.timerLa.string = '';
-        //this.showTipLa.string = 'Ready';
         this.loadShowTip(GlobalVar.CONST.Language_PATH.ready, true);
         GlobalVar.AudioMgr.playSound(GlobalVar.CONST.ENUM.AUDIO_TYPE.ready);
         setTimeout(() => {
@@ -295,38 +268,8 @@ export class SelectRolePanel extends cc.Component {
                 cc.callFunc(() => { this.node.destroy(); })
             ))
         }, 2000);
+    }
 
-        /*         let timer: number = 3;
-                let ready = setInterval(() => {
-                    this.playReadyCountDown(timer);
-                    timer--;
-                    if (timer < 0) {
-                        clearInterval(ready);
-                        this.node.destroy();
-                    }
-                }, 1000) */
-    }
-    private startTimer(): void {
-        let timer: number = 5;
-        this.schedule(() => {
-            this.timerLa.string = `${timer}`;
-            timer--;
-            if (timer < 0) {
-                this.onTouchBtnC();
-            }
-        }, 1, 5)
-    }
-    //播放准备倒计时动画
-    private playReadyCountDown(val: number): void {
-        this.readyTiemr.string = val.toString();
-        this.readyTiemr.node.opacity = 0;
-        this.readyTiemr.node.scale = 5;
-
-        this.readyTiemr.node.runAction(cc.spawn(
-            cc.fadeIn(.2),
-            cc.scaleTo(.2, 2)
-        ))
-    }
     private onTouchL(): void {
         if (this.select_l.isLock()) return;
         if (!this.onSelect(0)) return;
@@ -368,24 +311,13 @@ export class SelectRolePanel extends cc.Component {
         box2.borderSp.node.scale = 1;
         box2.borderSp.node.runAction(cc.scaleTo(.3, .8).easing(cc.easeBackOut()))
     }
-    private onTouchBtnC(): void {
-        if (!GlobalVar.NetConfig.isConnect) {
-            this.showOffLineTip();
-            return;
-        }
-        if (GlobalVar.NetConfig.isReady) return;//已经准备就绪
-
+    private onStartGame(): void {
         //ac
         this.endAnimation();
-        this.mbtnEnter.active = false;
         this.mRole.node.runAction(cc.spawn(
             cc.scaleBy(.5, 1.5).easing(cc.easeInOut(3)),
             cc.moveBy(.5, cc.v2(0, -300)).easing(cc.easeInOut(3))
         ));
-
-        //this.showTipLa.string = 'Waiting for opponent';
-        this.loadShowTip(GlobalVar.CONST.Language_PATH.waitForOpp);
-        GlobalVar.EventMgr.dispatchEvent(GlobalVar.CONST.EVENT.ready);
     }
     private showOffLineTip(): void {
         if (!this.offLineTip) return;
@@ -411,8 +343,12 @@ export class SelectRolePanel extends cc.Component {
     }
 
     private loadShowTip(path: string, isAc?: boolean): void {
-        if (isAc) { this.showTipAc() }
-        path += GlobalVar.NetConfig.language;
+        if (isAc) {
+            this.showTipAc();
+            path += 'en';
+        } else {
+            path += GlobalVar.NetConfig.language;
+        }
         let han = GlobalVar.GetHandler((sf: cc.SpriteFrame) => {
             if (this.showTipLa) {
                 this.showTipLa.spriteFrame = sf;
